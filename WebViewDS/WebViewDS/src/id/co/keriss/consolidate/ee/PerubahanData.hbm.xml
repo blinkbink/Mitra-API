@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping> 
+
+	<class name="id.co.keriss.consolidate.ee.PerubahanData"
+		table="perubahan_data_req">
+
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">perubahan_data_sq</param>
+			</generator>
+		</id>
+		<many-to-one name="eeuser" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+		<property name="address" type="boolean"></property>
+		<property name="phone" type="boolean"></property>
+		
+		<property name="kelurahan" type="string"></property>
+		<property name="alamat" type="string"></property>
+		<property name="kecamatan" type="string"></property>
+		<property name="kota" type="string"></property>
+		<property name="propinsi" type="string"></property>
+		<property name="kodepos" type="string"></property>
+		<property name="no_hp" type="string"></property>
+		<many-to-one name="update_from" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+		<property name="tgl_req" type="java.util.Date"></property>
+		<property name="status" type="char"></property>
+	</class>
+</hibernate-mapping>

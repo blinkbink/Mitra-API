@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.jpos.ee.SysLogEvent" table="syslog">
+		<meta attribute="extends">org.jpos.ee.SysLogEventBase</meta>
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
+		<property name="date" type="timestamp" />
+		<property name="deleted" type="boolean" />
+		<property name="source" type="string" length="32" />
+		<property name="type" type="string" length="32" />
+		<property name="severity" type="int" />
+		<property name="summary" type="string" length="255" />
+		<property name="detail" type="text" />
+		<property name="trace" type="text" />
+	</class>
+</hibernate-mapping>
+

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.RefRegistrasi"
+		table="Ref_registrasi">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">ref_registrasi_sq</param>
+			</generator>
+		</id>
+		<many-to-one name="eeuser"
+			class="org.jpos.ee.User" not-null="false"></many-to-one>
+		<many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+		<property name="admin_verifikasi" type="string"></property>
+		<property name="noref_pendaftaran" type="string"></property>
+		<property name="create_date" type="java.util.Date"></property>
+
+	</class>
+</hibernate-mapping>

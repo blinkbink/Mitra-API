@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu name="nologged"> 
+    <node name="EDC">
+    	<node name="Settled" url="report/settleUnsettleFrm.html" />
+    	<node name="Unsettled" url="report/UnsettleFrm.html" />
+    	<node name="Transaction">
+    		<node name="Summary" url="report/cardsumFrm.html"/>
+    		<node name="Details" url="report/cardTransactionFrm.html"/>
+    	</node>
+    	<node name="Card Summary" url="report/cardsumFrm.html" />
+    	<node name="MDR" url="report/paymentJsaFrm.html" />
+    </node>
+    <node name="Consolidation" url="report/consolidateFrm.html" />
+</menu>

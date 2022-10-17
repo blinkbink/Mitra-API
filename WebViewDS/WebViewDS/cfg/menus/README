@@ -1,0 +1,8 @@
+This is a brief explanation of menus system.
+Menus are extensible, any module can plug a menu in any sub-part of another menu.
+For an example see main-menu.xml, status.xml from module status_ui and minigl.xml from minigl_ui.
+Menus in different modules should have different names, otherwise one will override another in the building process and which is the winner is not specified.
+We currently support menus at any levels and the use of separators, see System sub menu of main-menu.xml for an example.
+The order in which menus are displayed is ruled by their weight the higher the weight the lower they appear, when in an xml a weight is defined in a node, the next menus have their wight incremented one by one until another weight is defined, because of this secuentially defined items are automatically ordered.
+In case duplicated weight appear (ideally this should not occur) the coincident are ordered by name alphabetically.
+

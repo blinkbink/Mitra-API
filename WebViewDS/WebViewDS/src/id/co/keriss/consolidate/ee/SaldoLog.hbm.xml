@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.SaldoLog"
+		table="SaldoLog">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">saldolog_sequence</param>
+			</generator>
+		</id>
+		<property name="tid" type="string"></property>
+		<property name="status" type="string"></property>
+		<property name="refnum" type="string"></property>
+		<property name="ket" type="string"></property>
+		<property name="stn" type="int"></property>
+		<many-to-one name="merchant"
+			class="id.co.keriss.consolidate.ee.Merchant" not-null="false"></many-to-one>
+		<many-to-one name="userid" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+		<property name="datetime" type="java.util.Date"></property>
+		<property name="amount" type="java.math.BigDecimal">
+			<column name="amount" sql-type="decimal(13,2)" />
+		</property>
+		<property name="curr_balance" type="java.math.BigDecimal">
+			<column name="curr_balance" sql-type="decimal(13,2)" />
+		</property>
+		<property name="transaction" type="string"></property>
+
+
+	</class>
+</hibernate-mapping>

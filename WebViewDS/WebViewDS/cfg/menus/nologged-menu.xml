@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu name="nologged">
+	<node name="Beranda" url="" />
+	<node name="Registrasi" url="registration.html" />
+	<node name="Tentang Kami" url="about.html" />
+	<node name="Panduan Penggunaan " url="" />
+</menu>
