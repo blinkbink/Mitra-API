@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.DocSigningSession" table="doc_signing">
+     
+    <composite-id>
+         <key-many-to-one name="signingSession" column="signing_session" class="id.co.keriss.consolidate.ee.SigningSession"
+			/>
+		<key-many-to-one name="document" class="id.co.keriss.consolidate.ee.Documents"
+			 />
+	</composite-id>
+	
+	<property name="read" type="boolean" ></property>
+	
+
+  </class>
+</hibernate-mapping>

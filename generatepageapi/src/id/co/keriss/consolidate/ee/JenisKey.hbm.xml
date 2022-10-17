@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.JenisKey"
+		table="jenis_key">
+		<id name="jenis_key" column="jenis_key" type="string" />
+
+		<property name="keterangan" type="string"></property>
+
+
+	</class>
+</hibernate-mapping>

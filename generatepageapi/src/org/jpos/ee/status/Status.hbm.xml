@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+    "classpath://org/hibernate/hibernate-configuration-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.jpos.ee.status.Status" table="status">
+		<meta attribute="extends">org.jpos.ee.status.StatusBase</meta>
+		<id name="id" type="string" length="32">
+			<generator class="assigned" />
+		</id>
+		<property name="name" type="string" />
+		<property name="state" type="string" length="8" />
+		<property name="detail" type="string" />
+		<property name="groupName" type="string" length="32" />
+		<property name="lastTick" type="timestamp" />
+		<property name="timeout" type="long" />
+		<property name="timeoutState" type="string" length="8" />
+		<property name="command" type="string" />
+		<property name="validCommands" type="string" />
+		<property name="expired" type="boolean" />
+		<property name="maxEvents" type="int" />
+
+		<set name="events" lazy="true" cascade="all-delete-orphan"
+			order-by="id asc">
+			<key column="status" />
+			<one-to-many class="org.jpos.ee.SysLogEvent" />
+		</set>
+		<set name="revisions" lazy="true" cascade="all-delete-orphan"
+			order-by="id asc">
+			<key column="status" />
+			<one-to-many class="org.jpos.ee.StatusRevisionEntry" />
+		</set>
+		<set name="tags" lazy="true" cascade="all-delete-orphan"
+			order-by="id asc">
+			<key column="status" />
+			<one-to-many class="org.jpos.ee.status.StatusTag" />
+		</set>
+	</class>
+</hibernate-mapping>
+

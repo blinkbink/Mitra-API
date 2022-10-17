@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Verifier"
+		table="Userdata">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">verifier_seq</param>
+			</generator>
+		</id>
+		<property name="id_ktp" type="string"></property>
+		<property name="name" type="string"></property>
+		<property name="position" type="string"></property>
+		<property name="tlp" type="string"></property>
+		<property name="email" type="string"></property>
+		<property name="imageKTP" column="ktp_image" type="string"></property>
+		<property name="imageWajah" column="face_image" type="string"></property>
+		<property name="status" type="boolean"></property>
+		<property name="verifier_id" type="string"></property>
+		<property name="delete" type="boolean"></property>
+		<many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+	</class>
+</hibernate-mapping>

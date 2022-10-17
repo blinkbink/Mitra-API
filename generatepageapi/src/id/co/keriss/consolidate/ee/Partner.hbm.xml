@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Partner" table="Partner">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">partner_sequence</param>
+			</generator>
+		</id>
+		<property name="pid" type="string"></property>
+		<property name="name" type="string"></property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.VerificationData" schema="verification" table="data_verification">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence" >verification.data_verification_seq</param>
+     </generator>
+    </id>
+    <property name="score" type="string"></property>
+    <property name="nik" type="string"></property>
+    <property name="name" column="nama" type="string"></property>
+    <property name="tempat_lahir" type="string"></property>
+    <property name="tgl_lahir"  column="tanggal_lahir" type="string"></property>
+  	<property name="alamat" type="string"></property>
+    <property name="wajah" column="fotowajah" type="string"></property>
+    <property name="tanggal_verifikasi"  type="java.util.Date"></property>
+    <property name="tanggal_verifikasi_foto"  type="java.util.Date"></property>
+    <property name="timestamp_selfie" type="string"></property>
+    <property name="timestamp_text" type="string"></property>
+
+  </class>
+</hibernate-mapping>

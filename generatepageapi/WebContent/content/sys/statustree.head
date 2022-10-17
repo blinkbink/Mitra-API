@@ -1,0 +1,7 @@
+<head>
+ <link rel="stylesheet" href="$request.contextPath/css/folder-tree-static.css" type="text/css">
+ <link rel="stylesheet" href="$request.contextPath/css/context-menu.css" type="text/css">
+ <script type="text/javascript" src="$request.contextPath/js/ajax.js"></script>
+ <script type="text/javascript" src="$request.contextPath/js/status-tree.js"></script>
+ <script type="text/javascript" src="$request.contextPath/js/context-menu.js"></script>
+</head>

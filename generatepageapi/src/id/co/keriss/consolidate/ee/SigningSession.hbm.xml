@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.SigningSession"
+		table="signing_session">
+
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">signing_session_seq</param>
+			</generator>
+		</id>
+		
+		<property name="create_time" type="java.util.Date"></property>
+		<property name="expire_time" type="java.util.Date"></property>
+		
+		<many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+			
+		<many-to-one name="eeuser" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+			
+		<property name="session_key" type="string" length="100"></property>
+		<property name="view_only" type="boolean" ></property>
+		<property name="must_read" type="boolean" ></property>
+		
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.DocumentAccess"
+		table="doc_access">
+
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">docaccess_sq</param>
+			</generator>
+		</id>
+		<property name="type" type="string" length="15"></property>
+		<property name="flag" type="boolean"></property>
+		<property name="read" type="boolean"></property>
+		<property name="date_sign" type="java.util.Date"></property>
+		<property name="email" type="string" length="50"></property>
+		<property name="page" type="integer"></property>
+		<property name="lx" type="string" length="30"></property>
+		<property name="ly" type="string" length="30"></property>
+		<property name="rx" type="string" length="30"></property>
+		<property name="ry" type="string" length="30"></property>
+		<property name="name" type="string"></property>
+		<property name="invoice" type="string" length="50"></property>
+		<property name="datetime" type="java.util.Date"></property>
+		<property name="action" type="string"></property>
+		<property name="visible" type="boolean">
+			<column name="visible" default="true"></column>
+		</property>
+		<property name="sequence_no" type="integer"></property>
+
+		<many-to-one name="document"
+			class="id.co.keriss.consolidate.ee.Documents" not-null="false"></many-to-one>
+		<!--many-to-one name="userdata" class="id.co.keriss.consolidate.ee.Userdata" 
+			not-null="false"></many-to-one -->
+		<many-to-one name="eeuser" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+		
+	</class>
+</hibernate-mapping>

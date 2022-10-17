@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Key" table="Key">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">key_sq</param>
+			</generator>
+		</id>
+
+		<many-to-one name="user" column="eeuser"
+			class="org.jpos.ee.User" not-null="false"></many-to-one>
+		<many-to-one name="jenis_key"
+			class="id.co.keriss.consolidate.ee.JenisKey" not-null="false"></many-to-one>
+		<property name="key_id" type="string"></property>
+		<property name="user_id" type="string"></property>
+		<property name="key" type="string"></property>
+		<property name="waktu_buat" type="java.util.Date"></property>
+		<many-to-one name="status"
+			class="id.co.keriss.consolidate.ee.StatusKey" not-null="false"></many-to-one>
+
+
+
+	</class>
+</hibernate-mapping>

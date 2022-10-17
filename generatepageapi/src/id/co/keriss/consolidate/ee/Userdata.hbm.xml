@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Userdata"
+		table="Userdata">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">user_sq</param>
+			</generator>
+		</id>
+		<property name="no_identitas" type="string"></property>
+		<property name="nama" type="string"></property>
+		<property name="jk" type="character"></property>
+		<property name="tempat_lahir" type="string"></property>
+		<property name="tgl_lahir" type="date"></property>
+		<property name="alamat" type="string"></property>
+		<property name="kelurahan" type="string"></property>
+		<property name="kecamatan" type="string"></property>
+		<property name="kota" type="string"></property>
+		<property name="propinsi" type="string"></property>
+		<property name="kodepos" type="string"></property>
+		<property name="no_handphone" type="string"></property>
+		<property name="npwp" type="string"></property>
+		<property name="imageKTP" column="i_ktp" type="string"></property>
+		<property name="imageNPWP" column="i_npwp" type="string"></property>
+		<property name="imageWajah" column="i_wajah" type="string"></property>
+		<property name="imageWajah2" column="i_wajah2" type="string"></property>
+		<property name="imageTtd" column="i_ttd" type="string"></property>
+		<property name="fingerprint1" type="string"></property>
+		<property name="fingerprint2" type="string"></property>
+		<many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+		<property name="level" type="string"></property>
+	</class>
+</hibernate-mapping>

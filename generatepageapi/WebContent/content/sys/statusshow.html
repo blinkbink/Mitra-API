@@ -1,0 +1,154 @@
+<script type="text/javascript">
+ function edit() {
+    var statusNameHTML    = "<input type='text' name='statusName' value='$!statusName'> \
+     <span class='red'>$!errorName</span>";
+    var statusGroupHTML   = "<input type='text' name='statusGroup' value='$!statusGroup'> \
+     <span class='red'>$!errorGroup</span>";
+    var statusTagsHTML    = "<input type='text' name='statusTags' value='$!statusTags'> \
+     <span class='red'>$!errorTags</span>";
+    var statusTimeoutHTML = "<input type='text' name='statusTimeout' value='$!statusTimeout'>&nbsp; secs \
+     <span class='red'>$!errorTimeout</span>";
+    var maxEventsHTML = "<input size='10' type='text' name='maxEvents' value='$!maxEvents'>&nbsp; \
+     <span class='red'>$!errorMaxEvents</span>";
+    var submitButtonHTML  = "<input name='action' class='button' type='submit' value='Update'>";
+
+    var timeoutStateHTML = "<select name='timeoutState'> \
+      #foreach ($state in $s.possibleStates)
+       <option value='$state' #if ($state == $s.timeoutState) selected #end >$state</option> \
+      #end
+     </select>";
+    document.getElementById("statusName").innerHTML = statusNameHTML;
+    document.getElementById("statusGroup").innerHTML = statusGroupHTML;
+    document.getElementById("statusTags").innerHTML = statusTagsHTML;
+    document.getElementById("statusTimeout").innerHTML = statusTimeoutHTML;
+    document.getElementById("maxEvents").innerHTML = maxEventsHTML;
+    document.getElementById("submitButton").innerHTML = submitButtonHTML;
+    document.getElementById("editButton").innerHTML = "";
+    document.getElementById("timeoutState").innerHTML = timeoutStateHTML;
+    // document.getElementById("messageArea").innerHTML = "&nbsp;";
+    #if ($s.validCommands)
+    document.getElementById("commands").innerHTML = "&nbsp;";
+    #end
+    return false;
+ }
+</script>
+
+<div class="hnav">
+	#parse("repository:fs_repository://sys/hnav.html")</div>
+<hr>
+
+#set ($rowheight = "28px") #set ($uri = "$request.getRequestURI()") #set
+($images = "$request.contextPath/images")
+
+<form action="$uri" method="get">
+	<div class="fullpane">
+		<img border="0" src="${images}/${s.iconName}" /> &nbsp; <font
+			size="+1"><strong>$!s.id</strong></font>&nbsp;&nbsp;<i>($!s.state)</i>
+		&nbsp; <span id="editButton"> <a href=''
+			onclick='return edit()'><font size="-2">[Edit]</font></a>
+		</span> <br> <input type="hidden" name="id" value="$s.id">
+
+		<table border="0" cellspacing="0">
+			<tr height="$rowheight">
+				<td class="label" align="right">Name: &nbsp;</td>
+				<td id="statusName">$!statusName</td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right">Group: &nbsp;</td>
+				<td id="statusGroup">$!statusGroup</td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right">Tags: &nbsp;</td>
+				<td id="statusTags">$!statusTags</td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right">Timeout: &nbsp;</td>
+				<td id="statusTimeout">$!statusTimeout secs</td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right">On Timeout: &nbsp;</td>
+				<td id="timeoutState" valign='top'>$!timeoutState</td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right" valign='top'>Max Events: &nbsp;</td>
+				<td id="maxEvents" valign='top'>$!maxEvents</td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right">Detail: &nbsp;</td>
+				<td><strong>$!s.detail</strong></td>
+			</tr>
+			<tr height="$rowheight">
+				<td class="label" align="right">Last tick: &nbsp;</td>
+				<td>$dateUtil.dateTimeToString($s.lastTick)
+					($!s.elapsedAsString)</td>
+			</tr>
+			#if ($s.validCommands)
+			<tr height="$rowheight" id='commands'>
+				<td class="label" align="right">Commands: &nbsp;</td>
+				<td>#foreach ($command in $s.Commands) <input name='action'
+					class='button' type='submit' value='$command' /> #end
+				</td>
+			</tr>
+			#end
+			<tr height="$rowheight">
+				<td colspan="2" align="left"><span id="submitButton" /></td>
+			</tr>
+		</table>
+	</div>
+</form>
+
+#if ($s.events.size() > 0)
+<table class="fullpane" border="1" width="100%">
+	<tr>
+		<th align="center" colspan="2" class="rblue">Event History</th>
+	</tr>
+	<tr>
+		<th width="20%" nowrap>Date</th>
+		<th>Detail</th>
+	</tr>
+	#foreach ($evt in $s.events) #if ($evt.severity == 0) #set ($color =
+	"white") #elseif ($evt.severity == 1) #set ($color = "#A0FFA0") #elseif
+	($evt.severity == 2) #set ($color = "#FFFFA0") #elseif ($evt.severity
+	== 3) #set ($color = "#FFFF00") #elseif ($evt.severity == 4) #set
+	($color = "#FF6060") #elseif ($evt.severity == 5) #set ($color =
+	"#FF2020") #end
+	<tr bgcolor="$color">
+		<td align="left">&nbsp;<font size="-2">$dateUtil.timestamp($evt.date)</font></td>
+		<td><a href="syslogshow.html?id=$evt.id"><b>$evt.summary</b></a></td>
+	</tr>
+	#end
+	<tr>
+		<th align="center" colspan="2">&nbsp;</th>
+	</tr>
+</table>
+#end #if ($s.revisions.size() > 0)
+<table class="fullpane" border="1" width="100%">
+	<tr>
+		<th align="center" colspan="3" class="rblue">Revision History</th>
+	</tr>
+	<tr>
+		<th width="20%" nowrap>Date</th>
+		<th width="10%" nowrap>User</th>
+		<th>Info</th>
+	</tr>
+	#foreach ($rev in $s.revisions)
+	<tr>
+		<td align="left">&nbsp;<font size="-2">$dateUtil.dateTimeToString($rev.date)</font></td>
+		<td align="center" valign="top">#if ($rev.author.nick) <a
+			href="$request.contextPath/user/show.html?id=$rev.author.id">$!rev.author.nick</a>
+			#else &nbsp; #end
+		</td>
+		<td>$rev.info</td>
+	</tr>
+	#end
+	<tr>
+		<th align="center" colspan="3">&nbsp;</th>
+	</tr>
+</table>
+#end #if ($edit)
+<script type="text/javascript">
+  edit()
+ </script>
+#end
+
+

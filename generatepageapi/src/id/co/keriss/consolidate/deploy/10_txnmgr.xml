@@ -1,0 +1,168 @@
+<txnmgr class="org.jpos.transaction.TransactionManager"
+	logger="Q2">
+	<property name="queue" value="TXNMGR" />
+	<property name="sessions" value="100" />
+	<property name="persistent-space" value="jdbm:txnmgr" />
+	<property name="debug" value="true" />
+	<property name="timeout" value="60000" />
+	<participant class="org.jpos.transaction.CreateProfiler"
+		logger="Q2" realm="profiler" />
+	<participant class="org.jpos.transaction.Open" logger="Q2"
+		realm="open">
+		<property name="checkpoint" value="open" />
+		<property name="timeout" value="60000" />
+	</participant>
+	<participant
+		class="id.co.keriss.consolidate.participant.SwitchParticipant"
+		logger="Q2">
+		<property name="280" value="testtelco close" />
+		<property name="210" value="inquirytelco close" />
+		<property name="220" value="paymenttelco close" />
+		<property name="240" value="reversaltelco close" />
+		<property name="222" value="reversaltelco close" />
+		<property name="0100760000" value="inquiryprepaid close" />
+		<property name="0200670000" value="purchaseprepaid close" />
+		<property name="0220680000" value="adviceprepaid close" />
+		<property name="0100560000" value="inquirypostpaid close" />
+		<property name="0200570000" value="paymentpostpaid close" />
+
+		<property name="0200690000" value="pulsaprepaid close" />
+		<property name="0100690000" value="advicepulsa close" />
+
+		<property name="0400000002" value="reversalpostpaid close" />
+		<property name="0100460000" value="inquirynontagihan close" />
+		<property name="0200470000" value="paymentnontagihan close" />
+		<property name="0400000006" value="reversalnontagihan close" />
+		<property name="0800990000" value="test close" />
+		<property name="0100990000" value="saldo close" />
+
+		<property name="0100480000" value="xml close" />
+		<property name="0200480000" value="xml close" />
+		<property name="0400480000" value="xml close" />
+		<property name="0100481000" value="xml close" />
+		<property name="0200481000" value="xml close" />
+		<property name="0220481000" value="xml close" />
+		<property name="0220481001" value="xml close" /><!-- untuk adv 
+			tanpa cek amount, untuk yang 1 step purchase -->
+		<property name="0100482000" value="xml close" />
+		<property name="0200482000" value="xml close" />
+		<property name="0400482000" value="xml close" />
+
+		<property name="0100100000" value="deposit close" />
+		<property name="0200100000" value="deposit close" />
+		<property name="0200200000" value="deposit close" />
+		<property name="0200500000" value="deposit close" />
+		<property name="0400100000" value="deposit close" />
+
+		<property name="0200170000" value="ymswitch close" />
+		<property name="0200170001" value="ymswitch close" />
+
+	</participant>
+	<participant class="org.jpos.transaction.Close" logger="Q2"
+		realm="close" />
+	<group name="xml">
+		<participant
+			class="id.co.keriss.consolidate.participant.XMLSwPrepaidInquiryParticipant"
+			logger="Q2" realm="xml" />
+	</group>
+	<group name="testtelco">
+		<participant
+			class="id.co.keriss.consolidate.participant.TestTelcoParticipant"
+			logger="Q2" realm="testtelco" />
+	</group>
+	<group name="inquirytelco">
+		<participant
+			class="id.co.keriss.consolidate.participant.InquiryTelcoParticipant"
+			logger="Q2" realm="inquirytelco" />
+	</group>
+	<group name="paymenttelco">
+		<participant
+			class="id.co.keriss.consolidate.participant.PaymentTelcoParticipant"
+			logger="Q2" realm="paymenttelco" />
+	</group>
+	<group name="reversaltelco">
+		<participant
+			class="id.co.keriss.consolidate.participant.ReversalTelcoParticipant"
+			logger="Q2" realm="reversaltelco" />
+	</group>
+	<group name="inquiryprepaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLPrepaidInquiryParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="purchaseprepaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLPrepaidPurchaseParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="adviceprepaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLPrepaidAdviceParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="inquirypostpaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLPostpaidInquiryParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="paymentpostpaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLPostpaidPaymentParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="pulsaprepaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.PulsaPrepaidParticipant"
+			logger="Q2" realm="pulsapre" />
+	</group>
+	<group name="advicepulsa">
+		<participant
+			class="id.co.keriss.consolidate.participant.PrepaidAdviceXMLParticipant"
+			logger="Q2" realm="pulsapre" />
+	</group>
+	<group name="reversalpostpaid">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLPostpaidReversalParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="inquirynontagihan">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLNontagihanInquiryParticipant"
+			logger="Q2" realm="nontaglis" />
+	</group>
+	<group name="paymentnontagihan">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLNontagihanPaymentParticipant"
+			logger="Q2" realm="nontaglis" />
+	</group>
+	<group name="reversalnontagihan">
+		<participant
+			class="id.co.keriss.consolidate.participant.SLNontagihanReversalParticipant"
+			logger="Q2" realm="nontaglis" />
+	</group>
+	<group name="test">
+		<participant
+			class="id.co.keriss.consolidate.participant.TestParticipant"
+			logger="Q2" realm="postpre" />
+	</group>
+	<group name="saldo">
+		<participant
+			class="id.co.keriss.consolidate.participant.SaldoParticipant"
+			logger="Q2" realm="saldo" />
+	</group>
+	<group name="deposit">
+		<participant
+			class="id.co.keriss.consolidate.participant.DepositParticipant"
+			logger="Q2" realm="deposit" />
+	</group>
+	<group name="ymswitch">
+		<participant
+			class="id.co.keriss.consolidate.participant.YMSwParticipant"
+			logger="Q2" realm="ymsw" />
+		<participant
+			class="id.co.keriss.consolidate.participant.PulsaPrepaidParticipant"
+			logger="Q2" realm="pulsasw" />
+	</group>
+</txnmgr>
+
+

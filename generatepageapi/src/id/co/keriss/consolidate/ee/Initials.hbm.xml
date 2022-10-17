@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.Initial" table="Initials">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence">initials_sq</param>
+     </generator>
+    </id>
+    <many-to-one name="doc_access"
+			class="id.co.keriss.consolidate.ee.DocumentAccess" not-null="false"></many-to-one>
+    <property name="page" type="integer"></property>
+    <property name="lx" type="string"></property>
+    <property name="ly" type="string"></property>
+    <property name="rx" type="string"></property>
+    <property name="ry" type="string"></property>
+  </class>
+</hibernate-mapping>

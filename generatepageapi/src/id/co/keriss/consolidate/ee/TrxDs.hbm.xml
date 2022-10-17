@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.TrxDs" table="Trx_ds">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">transaction_sequence</param>
+			</generator>
+		</id>
+
+		<property name="message" type="string"></property>
+		<property name="type" type="char"></property>
+		<property name="msg_time" type="java.util.Date"></property>
+		<many-to-one name="msg_to"
+			class="id.co.keriss.consolidate.ee.Userdata" not-null="false"></many-to-one>
+		<many-to-one name="msg_from"
+			class="id.co.keriss.consolidate.ee.Userdata" not-null="false"></many-to-one>
+		<many-to-one name="status"
+			class="id.co.keriss.consolidate.ee.StatusKey" not-null="false"></many-to-one>
+
+
+
+	</class>
+</hibernate-mapping>

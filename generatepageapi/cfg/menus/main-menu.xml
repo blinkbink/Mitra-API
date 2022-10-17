@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu name="main">
+	<node name="Manajemen Key" url="km/infokey.html" permissions="ds">
+		<node name="Verifikasi HP" url="km/verification.html" />
+		<node name="Informasi Key" url="km/infokey.html" />
+		<node name="Membuat Key" url="km/generate.html" />
+		<node name="Sign Public Key" url="km/SignPublic.html" />
+
+	</node>
+
+	<node name="Transaksi" url="trxds/logtrx.html" permissions="ds">
+		<node name="Riwayat Transaksi" url="trxds/logtrx.html" />
+	</node>
+
+
+	<node name="Dokumen" url="doc/listdoc.html" permissions="ds">
+		<node name="Daftar Dokumen" url="doc/listdoc.html" />
+	</node>
+
+	<node name="API" url="developer/signaturedata.html">
+		<node name="Membuat Signature" url="developer/signaturedata.html" />
+		<node name="Verifikasi Data" url="developer/verifikasidata.html" />
+	</node>
+
+	<node name="Admin" url="user/list.html" permissions="admin">
+		<node name="User List" url="user/list.html" />
+		<node name="New User" url="user/add.html" />
+	</node>
+
+	<node name="Transaction Log" url="report/cardTransactionFrm.html"
+		permissions="logtrx">
+		<node name="Transaction Log" url="report/cardTransactionFrm.html" />
+		<node name="Deposit Log" url="report/depositLogFrm.html" />
+		<node name="Transaction Search"
+			url="report/searchTransactionFrm.html" />
+	</node>
+
+	<node name="Rekonsiliasi" url="report/reconcile.html"
+		permissions="admin">
+		<node name="Create PDF" url="report/reconcile.html" />
+	</node>
+
+	<node name="Merchant" url="report/viewMerchantFrm.html"
+		permissions="useradmin">
+		<node name="Merchant List" url="report/viewMerchantFrm.html"
+			permissions="useradmin" />
+		<node name="New Merchant" url="report/merchantFrm.html"
+			permissions="profiling" />
+		<node name="New Deposit" url="sys/depositform.html"
+			permissions="finance" />
+	</node>
+
+	<node name="Product" url="sys/viewProductFrm.html"
+		permissions="admin">
+		<node name="Product List" url="sys/viewProductFrm.html" />
+		<node name="New/Edit Product" url="sys/productFrm.html" />
+	</node>
+
+	<node name="Bank" url="report/viewBankFrm.html"
+		permissions="admin">
+		<node name="Bank List" url="report/viewBankFrm.html" />
+	</node>
+
+
+	<!-- <node name="System" permissions="admin1" > <node name="SysLog" url="sys/syslog.html" 
+		permissions="admin1"/> <node url="sys/sysconfig.html" name="Configuration" 
+		permissions="admin1" weight="10"/> </node> <node name="System"> </node> -->
+</menu>
+
