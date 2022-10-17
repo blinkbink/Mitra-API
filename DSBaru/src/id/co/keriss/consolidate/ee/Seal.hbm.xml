@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.Seal" table="seal">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence">seal_id_seq</param>
+     </generator>
+    </id>
+    <property name="name" type="string"></property>
+    <many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+    <property name="password" type="string"></property>
+    <property name="image" type="string"></property>
+  </class>
+</hibernate-mapping>

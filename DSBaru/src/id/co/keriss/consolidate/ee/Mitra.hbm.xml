@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Mitra" table="mitra">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">mitra_sq</param>
+			</generator>
+		</id>
+		<property name="name" type="string"></property>
+		<property name="verifikasi" type="boolean"></property>
+		<property name="notifikasi" type="boolean"></property>
+		<property name="ekyc" type="boolean"></property>
+		<property name="level" type="string"></property>
+		<property name="activation_redirect" type="string"></property>
+		<property name="signing_redirect" type="string"></property>
+		<property name="dukcapil" type="boolean"></property>
+		<property name="ekyc_tabungan" type="boolean"></property>
+		<property name="user_sftp" type="string"></property>
+		<property name="verifikasi_email" type="boolean"></property>
+		<many-to-one name="provinsi" class="id.co.keriss.consolidate.ee.Wl_Provinces"></many-to-one>
+	</class>
+</hibernate-mapping>

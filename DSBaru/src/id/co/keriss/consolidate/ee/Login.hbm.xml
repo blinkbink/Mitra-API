@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.Login" table="login">
+    <id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">login_seq</param>
+			</generator>
+		</id>
+
+    
+    <property name="password" length="32" type="string" />
+    <property name="username" length="30" not-null="false"
+      type="string" />
+    <property name="imei" type="string" />
+    <property name="date_record" type="java.util.Date"></property>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.SealDocAccess" table="Seal_doc_access">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence">seal_doc_access_id_seq</param>
+     </generator>
+    </id>
+    <many-to-one name="user_seal"
+			class="id.co.keriss.consolidate.ee.UserSeal" not-null="false"></many-to-one>
+	<many-to-one name="doc_access"
+			class="id.co.keriss.consolidate.ee.DocumentAccess" not-null="false"></many-to-one>
+	<property name="qr_text" type="string"></property>
+  </class>
+</hibernate-mapping>

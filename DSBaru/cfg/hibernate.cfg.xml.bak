@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="show_sql">true</property>
+		<property name="format_sql">false</property>
+		<property name="use_sql_comments">true</property>
+		<property name="generate_statistics">false</property>
+		<property name="max_fetch_depth">2</property>
+		<property name="default_batch_fetch_size">16</property>
+		<property name="use_streams_for_binary">true</property>
+		<property name="connection.isolation">2</property>
+
+		<property name="hibernate.c3p0.min_size">2</property>
+		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.timeout">300</property>
+		<property name="hibernate.c3p0.max_statements">300</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+
+		<property name="hibernate.c3p0.idle_test_period">3000</property>
+
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="hibernate.cache.use_structured_entries">true</property>
+		<property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+		<!-- opt/hibernate_postgresql/cfg/_hibernate.cfg.properties -->
+
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="connection.driver_class">org.postgresql.Driver</property>
+
+		<!--property name="connection.url">jdbc:postgresql://192.168.3.37/digisign_db</property -->
+		<property name="connection.url">jdbc:postgresql://localhost/digisign_db</property>
+		<!--property name="connection.url">jdbc:postgresql://122.129.112.54:18988/digisign_db</property -->
+
+		<property name="connection.username">fiki</property>
+		<property name="connection.password">development19</property>
+
+
+		<mapping resource="org/jpos/ee/SysConfig.hbm.xml" />
+		<mapping resource="org/jpos/ee/SysLogEvent.hbm.xml" />
+		<mapping resource="org/jpos/ee/User.hbm.xml" />
+		<mapping resource="org/jpos/ee/Visitor.hbm.xml" />
+		<mapping resource="org/jpos/ee/RevisionEntry.hbm.xml" />
+		<mapping resource="org/jpos/ee/ResultCode.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Product.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Range.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Batch.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Cassa.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Edc.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Bank.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Terminal.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Merchant.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Transaction.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/CardType.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Store.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Reconciliation.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/invoicing.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Floor.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Card.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Partner.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/TopupLog.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/ReconLog.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/ProductBiller.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/ProductBillerMerchant.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Feature.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Account.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Appparameter.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/TransactionDetail.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/NominalAmount.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/SaldoLog.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Supplier.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/SupplierChn.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Userdata.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/StatusKey.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/JenisKey.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/key.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/TrxDs.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Wl_Provinces.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Wl_Regencies.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Wl_Districts.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Wl_Villages.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/ConfirmCode.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Documents.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/DocAccess.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Ttd.hbm.xml" />
+		<mapping
+			resource="id/co/keriss/consolidate/ee/Preregistration.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/Mitra.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/PerubahanData.hbm.xml" />
+		<mapping resource="id/co/keriss/consolidate/ee/RegistrationLog.hbm.xml" />
+
+		<!-- modules/status/cfg -->
+		<mapping resource="org/jpos/ee/status/Status.hbm.xml" />
+		<mapping resource="org/jpos/ee/status/StatusTag.hbm.xml" />
+		
+		
+
+	</session-factory>
+</hibernate-configuration>
+

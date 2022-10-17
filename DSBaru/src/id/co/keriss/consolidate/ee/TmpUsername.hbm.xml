@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.TMPUsername"
+		table="tmp_username">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">tmp_username_id_seq</param>
+			</generator>
+		</id>
+		<property name="username" type="string" unique="true"></property>
+		<property name="date_record" type="java.util.Date"></property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+	<property name="title">System/Status</property>
+	<property name="tab">System</property>
+	<property name="perms">login operator</property>
+	<page-action name="org.jpos.ee.action.CheckAccess" />
+	<page-action name="org.jpos.ee.action.sys.Status" />
+</page>
+

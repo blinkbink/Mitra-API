@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.KuserAllow" table="kuser_allow">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence">kuser_allow_id_seq</param>
+     </generator>
+    </id>
+    
+    <many-to-one name="id_kuser" class="id.co.keriss.consolidate.ee.Kuser" not-null="false"></many-to-one>
+    <many-to-one name="id_format_pdf" class="id.co.keriss.consolidate.ee.FormatPdf" not-null="false"></many-to-one>
+    
+  </class>
+</hibernate-mapping>

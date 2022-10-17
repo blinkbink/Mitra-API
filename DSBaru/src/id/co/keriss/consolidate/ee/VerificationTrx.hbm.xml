@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.VerificationTransaction" schema="verification" table="verf_transaction">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence" >verification.trx_verification_seq</param>
+     </generator>
+    </id>
+    <many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+    <property name="msg_time"  type="java.util.Date"></property>
+    <property name="nik" type="string"></property>
+    <property name="result" type="boolean"></property>
+    <property name="sendToFaceCheck"  column="face_check" type="boolean"></property>
+    <property name="sendToDataCheck"  column="data_check" type="boolean"></property>
+    <property name="timestampFace" column="timestamp_face" type="string"></property>
+    <property name="timestampData" column="timestamp_data" type="string"></property>
+    <property name="msgResp" column="message" type="string"></property>
+	<property name="msgReq" column="request" type="string"></property>
+    <property name="invoice" type="java.lang.Long"></property>
+  </class>
+</hibernate-mapping>

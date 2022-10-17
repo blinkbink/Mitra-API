@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<page>
+    <property name="title">AutomaticSign</property>
+    <page-action name="apiMitra.DoubleAutomaticSign" />
+</page>
+

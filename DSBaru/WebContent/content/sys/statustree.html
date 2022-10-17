@@ -1,0 +1,23 @@
+
+<div class="hnav">
+	#parse("repository:fs_repository://sys/hnav.html")</div>
+
+#set ($uri = "$request.getRequestURI()") #set ($images =
+"$request.contextPath/images") #macro(showTagNode $t)
+<li><a href="#" title="$!t.tag" id="node_$t.tag">$!t.tag</a>
+	<ul>
+		<li parentId="$t.tag"><a href="#" id="node_$t.tag">Loading...</a></li>
+	</ul></li>
+#end
+
+<div class="leftpane">
+	<ul id="status_tree" class="dhtmlgoodies_tree">#foreach ($t in
+		$tags) #showTagNode ($t) #end
+	</ul>
+
+</div>
+
+<script type="text/javascript">
+ initContextMenu();
+</script>
+

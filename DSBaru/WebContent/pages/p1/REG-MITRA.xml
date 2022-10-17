@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+	<property name="title">Index</property>
+	<page-action name="apiMitraV3.RegMitraV3" />
+</page>
+

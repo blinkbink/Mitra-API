@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.ReRegistration" table="re_registration">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">re_registration_id_seq</param>
+			</generator>
+		</id>
+
+		<many-to-one name="userdata" class="id.co.keriss.consolidate.ee.Userdata" not-null="true"></many-to-one>
+		<property name="datetime" type="java.util.Date"></property>
+		<property name="selfie_photo" type="string" not-null="false"></property>
+		
+	</class>
+</hibernate-mapping>

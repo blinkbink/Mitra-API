@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=content-width, initial-scale=1, maximum-scale=1.2, user-scalable=yes" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+	integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+	integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+	crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
+<script>
+var lefts = 0;
+var tops =0;
+var widths = 0;
+var heights = 0;
+var def_style;
+//pjg ttd 165 x130
+$(function () {
+				$("#main-body").hide();
+				$("#no").click(function(){
+					console.log('saya tidak setuju');
+					DS.resultTAC(0);
+
+				});
+				$("#yes").click(function(){
+					console.log('saya setuju');
+					DS.resultTAC(1);
+					
+				});
+				
+});
+</script>
+<body style='padding: 10px 10px 10px 10px;'>
+	<center>
+		<h2>Syarat dan Ketentuan</h2>
+	</center>
+	<br>
+	<br>
+	<br>
+	<button id="no" class="btn btn-lg btn-danger btn-block">Saya
+		Tidak Menyetujui</button>
+	<button id="yes" class="btn btn-lg btn-success btn-block">Saya
+		Menyetujui</button>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Payment" table="payment">
+
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">payment_seq</param>
+			</generator>
+		</id>
+		<property name="photo" type="string" length="50"></property>
+		<property name="product_code" type="string" length="10"></property>
+		<property name="amount" type="java.lang.Long"></property>
+		<property name="amount_original" type="java.lang.Long"></property>
+		<property name="name_source" type="string" length="50"></property>
+		<property name="bank_from" type="string" length="50"></property>
+		<property name="bank_to" type="string" length="50"></property>
+		<property name="date_request" type="java.util.Date"
+			length="50"></property>
+		<property name="date_confirmation" type="java.util.Date"></property>
+		<property name="date_update" type="java.util.Date"></property>
+		<property name="status" type="integer"></property>
+		<property name="id_customer" type="string" length="50"></property>
+		<many-to-one name="eeuser" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+		<property name="invoice" type="string" length="50"></property>
+		<property name="jml_ttd" type="integer"></property>
+
+
+	</class>
+</hibernate-mapping>

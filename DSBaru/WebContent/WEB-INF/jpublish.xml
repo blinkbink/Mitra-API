@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<jpublish>
+	<name>Consolidation</name>
+
+	<!-- <pre-evaluation-action name="org.jpos.ee.action.Open" path="/*.html"/> 
+		menu-reload-time is the time for reloading user menu based in permissions, 
+		not the global menu tree, time is specified in milliseconds, if not defined, 
+		the default is 5 minutes <path-action name="org.jpos.ee.action.Menu" path="/*.html" 
+		menu-reload-time="300000"/> <post-evaluation-action name="org.jpos.ee.action.Close" 
+		path="*.html"/> -->
+		
+	<pre-evaluation-action
+		name="org.jpos.ee.action.Open" path="/*.html" />
+	<post-evaluation-action
+		name="org.jpos.ee.action.Close" path="*.html" />
+
+	<!--Velocity renderer -->
+	<view-renderer
+		classname="org.jpublish.view.velocity.VelocityViewRenderer">
+		<velocity-properties relative-paths="true">WEB-INF/velocity.properties</velocity-properties>
+		<resource-cache-enabled>false</resource-cache-enabled>
+		<resource-cache-interval>0</resource-cache-interval>
+	</view-renderer>
+
+	<repository name="fs_repository"
+		classname="org.jpublish.repository.filesystem.FileSystemRepository">
+		<root>content</root>
+		<cache>default</cache>
+	</repository>
+
+
+	<cache-manager>
+		<jpublish.cache.provider>
+			<!--<implementation name="default" class="org.jpublish.util.JPublishSimpleCacheImpl"/> -->
+			<!--<implementation name="default" class="org.jpublish.util.JPublishWhirlyCacheImpl"/> -->
+			<implementation name="default"
+				class="org.jpublish.util.JPublishCacheImpl" />
+		</jpublish.cache.provider>
+	</cache-manager>
+
+	<mime-mapping ext="x" mimetype="text/xml" />
+	<mime-mapping ext="js" mimetype="text/javascript"/>
+
+	<default-error-handlers>
+		<error-handler
+			class="org.jpublish.error.DefaultErrorHandler" />
+	</default-error-handlers>
+
+	<debug>true</debug>
+</jpublish>
+

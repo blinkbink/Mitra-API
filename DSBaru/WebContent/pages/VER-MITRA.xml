@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<page>
+    <property name="title">VeriMitra</property>
+    <page-action name="apiMitra.VerMitra" />
+</page>

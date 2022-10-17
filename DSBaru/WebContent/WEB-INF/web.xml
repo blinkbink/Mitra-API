@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+	PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	"http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+	<servlet>
+		<servlet-name>log4j-init</servlet-name>
+		<servlet-class>api.ApplicationLogServlet</servlet-class>
+		<init-param>
+			<param-name>log4j-init-file</param-name>
+			<param-value>/WEB-INF/log4j.properties</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>TopupSystem</servlet-name>
+		<servlet-class>api.TopupSystem</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DownloadFile</servlet-name>
+		<servlet-class>api.DownloadFile</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DownloadFileSmartphone</servlet-name>
+		<servlet-class>api.DownloadFile</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>FileGetter</servlet-name>
+		<servlet-class>api.FileGetter</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>FileGetter2</servlet-name>
+		<servlet-class>api.FileGetter2</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>SavePasswordActivasi</servlet-name>
+		<servlet-class>apiMitra.SavePasswordActivasi</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>OTP</servlet-name>
+		<servlet-class>api.OTP</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>jpublish</servlet-name>
+		<servlet-class>org.jpublish.servlet.JPublishServlet</servlet-class>
+
+		<!-- This init-paramter tells JPublish where to find the configuration 
+			file and is required. This path is relative to the context root. -->
+
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>WEB-INF/jpublish.xml</param-value>
+		</init-param>
+
+		<!-- Set the load order -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>TopupSystem</servlet-name>
+		<url-pattern>/PRCTOPUPSYS.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DownloadFile</servlet-name>
+		<url-pattern>/DW01.html</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>DownloadFileSmartphone</servlet-name>
+		<url-pattern>/DWL01.html</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>OTP</servlet-name>
+		<url-pattern>/PRCOTP.html</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FileGetter</servlet-name>
+		<url-pattern>/dt01.html/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FileGetter2</servlet-name>
+		<url-pattern>/dt02.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SavePasswordActivasi</servlet-name>
+		<url-pattern>/savePWD.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>jpublish</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>jpublish</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>2</session-timeout>
+	</session-config>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.html</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/403.html</location>
+	</error-page>
+	<error-page>
+		<error-code>401</error-code>
+		<location>/401.html</location>
+	</error-page>
+
+</web-app>
+

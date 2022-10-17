@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.RegistrationLog"
+		table="registration_log">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">registration_log_id_seq</param>
+			</generator>
+		</id>
+		<property name="email" type="string" not-null="false"></property>
+		<property name="no_identitas" type="string" not-null="false"></property>
+		<property name="nama" type="string" not-null="false"></property>
+		<property name="jk" type="char" not-null="false"></property>
+		<property name="tempat_lahir" type="string" not-null="false"></property>
+		<property name="tgl_lahir" type="date" not-null="false"></property>
+		<property name="kelurahan" type="string" not-null="false"></property>
+		<property name="alamat" type="string" not-null="false"></property>
+		<property name="kecamatan" type="string" not-null="false"></property>
+		<property name="kota" type="string" not-null="false"></property>
+		<property name="propinsi" type="string" not-null="false"></property>
+		<property name="kodepos" type="string" not-null="false"></property>
+		<property name="no_handphone" type="string" not-null="false"></property>
+		<many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+		<property name="npwp" type="string" not-null="false"></property>
+		<property name="imageKTP" column="i_ktp" type="string" not-null="false"></property>
+		<property name="imageNPWP" column="i_npwp" type="string" not-null="false"></property>
+		<property name="imageWajah" column="i_wajah" type="string" not-null="false"></property>
+		<property name="imageTtd" column="i_ttd" type="string" not-null="false"></property>
+		<property name="type" type="char" not-null="false"></property>
+		<property name="username" type="string" not-null="false"></property>
+		<property name="email_perusahaan" type="string" not-null="false"></property>
+		<property name="data_exists" type="boolean" not-null="false"></property>	
+		<property name="imageKitas" column="i_kitas" type="string" not-null="false"></property>
+		<property name="verifikasi" type="boolean" not-null="true" ></property>
+		<property name="redirect" type="boolean" not-null="false"></property>
+		<property name="imageWajahDukcapil" column="i_wajah_dukcapil" type="string" not-null="false"></property>
+		<property name="imageWefie" column="i_wefie" type="string" not-null="false"></property>
+		<property name="kode_bank" type="string" not-null="false"></property>
+		<property name="no_rekening" type="string" not-null="false"></property>
+		<property name="message_req" type="string" not-null="false"></property>
+		<property name="message_response" type="string" not-null="false"></property>
+		<property name="i_buku_tabungan" type="string"></property>
+	</class>
+</hibernate-mapping>

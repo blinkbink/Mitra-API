@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.Invoice" table="invoice">
+	
+    <id name="id_invoice" column="id_invoice" type="java.lang.Long">
+		<generator class="sequence">
+				<param name="sequence">invoice_seq</param>
+		</generator>
+ 	</id>      
+    <property name="kb_invoice" type="string"></property>
+    <property name="datetime" type="java.util.Date"></property>
+    <property name="amount" type="long"></property>
+    <many-to-one name="eeuser" class="org.jpos.ee.User"></many-to-one>
+	<many-to-one name="document" class="id.co.keriss.consolidate.ee.Documents"></many-to-one>
+	<property name="external_key" type="string"></property>
+    <property name="tenant" type="character"></property>
+    <property name="trx" type="character"></property> 
+    <property name="cur_balance" type="long"></property>
+  </class>
+  
+</hibernate-mapping>

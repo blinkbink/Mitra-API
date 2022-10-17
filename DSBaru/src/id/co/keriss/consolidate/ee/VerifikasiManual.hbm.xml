@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.VerifikasiManual" table="verifikasi_manual">
+    <id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">verifikasi_manual_id_seq</param>
+			</generator>
+		</id>
+    <property name="nik" type="string" />
+    <property name="email" type="string" />
+    <property name="create_date" type="java.util.Date" />
+	<many-to-one name="id_registration_log" class="id.co.keriss.consolidate.ee.RegistrationLog"
+			not-null="false"></many-to-one>
+  </class>
+</hibernate-mapping>

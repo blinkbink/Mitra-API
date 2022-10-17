@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.BlockAutoReplaceDoc"
+		table="Block_auto_replace_doc">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">block_auto_replace_doc_seq</param>
+			</generator>
+		</id>
+		
+		<many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+		
+	</class>
+</hibernate-mapping>
