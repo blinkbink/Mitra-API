@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu name="status" parent="main">
+	<!-- <node url="sys/status.html?refresh=30" name="Status" permissions="login" 
+		weight="1"/> <node url="sys/status.html?refresh=30&amp;tag=dashboard" name="DashBoard" 
+		permissions="login"/> <node url="sys/statustree.html?refresh=30" name="StatusTree" 
+		permissions="login"/> -->
+	<!-- <node name="Users" permissions="useradmin"> <node name="List" url="user/list.html?refresh=30"/> 
+		<node name="Add" url="user/add.html"/> </node> -->
+</menu>

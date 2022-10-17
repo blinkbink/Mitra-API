@@ -1,0 +1,16 @@
+$a
+<script>
+	
+	var xhr = new XMLHttpRequest();
+	xhr.onload = function() {
+	  if (this.status < 400 && this.status >= 300 || this.status != 200) {
+	    alert('this redirects to ' + this.getResponseHeader("Location"));
+	    console.log("kwikiw1"+xhr.responseURL); // http://example.com/test
+	  } else {
+	    alert('doesn\'t redirect ');
+	    console.log("kwikiw2"+xhr.responseURL); // http://example.com/test
+	  }
+	}
+	xhr.open('GET', 'https://p2p.fintag.id/digisign-process/callbacksign?msg=60xDiOjfDlp7iwMz0l%2BNtpg5NeTxK7RIRlyxXimNS%2Bz2Un67GrHhMfz%2B6qW%2BSjYNks%2Fu2ZSinFr4%0AKQL9EGyQXBf2Mm43FYwXtOW4uiwBVrUQt53HqfacaIUr%2Fjp5vKdYq4SuzNLNE7QYY6PGS22g2%2BYL%0APhBJtmNrBxsmD%2FHmXZgXapUo3mlTUZRryjaHXuDPGcwZUCHMgCHYA2ix4bVL0XJPTciIPlFfPFNE%0AQX0FTPPIS1Ub%2BiX7r2vZb2Nb8X6M', true);
+	xhr.send();
+</script>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.Canceled_document" table="canceled_document">
+    <id name="id" column="id" type="java.lang.Long">
+    <generator class="sequence">
+    <param name="sequence">canceled_document_id_seq</param>
+     </generator>
+    </id>
+    <property name="date_time" type="java.util.Date"></property>
+    <many-to-one name="doc_access" class="id.co.keriss.consolidate.ee.DocumentAccess"></many-to-one>    
+    <property name="reason" type="string"></property>
+  </class>
+</hibernate-mapping>

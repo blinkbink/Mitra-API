@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+	<property name="title">403 - You can't view that resource!</property>
+	<!-- <page-action name="api.response.forbidden" />  -->
+</page>
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+	<property name="title">Index</property>
+	<property name="perms">login</property>
+	<!-- <page-action name="org.jpos.ee.action.CheckAccess" /> -->
+	<!-- <page-action name="org.jpos.ee.action.CheckAccess" /> <page-action 
+		name="id.co.keriss.consolidate.action.report.Reconcile" /> <page-action name="id.co.keriss.consolidate.action.report.Recon" 
+		/> -->
+</page>
+

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<page>
+    <property name="title">Activation</property>
+    <page-action name="id.co.keriss.consolidate.action.km.ActivationPage_v" />
+</page>
+

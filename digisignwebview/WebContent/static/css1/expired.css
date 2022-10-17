@@ -1,0 +1,19 @@
+.main-body {
+  margin:50px 20px 0;
+  border: solid 1px black;
+  padding:20px;
+  position:relative;
+}
+
+/* === CSS FILTER EFFECTS === */
+.main-body.modalBlur > *:not(.modal) {
+  -webkit-filter: blur(8px);
+}
+.main-body.modalDesaturate > *:not(.modal) {
+  -webkit-filter: saturate(0%);
+}
+/* === SOFTEN THE MODAL BACKDROP SO THE EFFECT IS MORE VISIBLE === */
+.modal-backdrop {
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+}

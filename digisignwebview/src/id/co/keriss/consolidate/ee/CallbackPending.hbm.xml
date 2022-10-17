@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.CallbackPending" table="callback_pending">
+    <id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">callback_pending_id_seq</param>
+			</generator>
+		</id>
+	
+    <many-to-one name="mitra"
+			class="id.co.keriss.consolidate.ee.Mitra" not-null="false"></many-to-one>
+    <property name="callback" type="string" />
+    <property name="tipe" type="string" />
+    <property name="response" type="integer"></property>
+
+  </class>
+</hibernate-mapping>

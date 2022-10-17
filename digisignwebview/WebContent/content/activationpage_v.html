@@ -1,0 +1,844 @@
+#if($result != "00")
+	$result
+#else	
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link rel="icon" href="$domainwv/img/favicon.ico">
+
+<title>Digisign Aktivasi</title>
+  
+   <script src="$domainwv/aktivasi/js/jquery.js" type="text/javascript"></script>
+   <link href="$domainwv/aktivasi/css/bootstrap.min.css" rel="stylesheet">
+   <script src="$domainwv/aktivasi/js/bootstrap.min.js"></script>
+   <link href="$domainwv/aktivasi/css/jquery-ui.css" rel="stylesheet">
+   <script src="$domainwv/aktivasi/js/cleave.min.js"></script>
+   <script src="$domainwv/aktivasi/js/wTrx.js"></script>
+   <link href="$domainwv/aktivasi/css/select2.min.css" rel="stylesheet">
+   <script src="$domainwv/aktivasi/js/select2.min.js"></script>
+   <link rel="stylesheet" href="$domainwv/aktivasi/css/passwordscheck.css">
+   <script src="$domainwv/aktivasi/js/passwordscheck.js?v=$rand"></script>
+   <link href="$domainwv/aktivasi/css/jasny-bootstrap.css" rel="stylesheet">
+   <script src="$domainwv/aktivasi/js/jasny-bootstrap.js"></script>
+   <link href="$domainwv/aktivasi/css/signature-pad.css" rel="stylesheet">
+   <script src="$domainwv/aktivasi/js/sweetalert.min.js"></script>
+   <script src="$domainwv/aktivasi/js/submitBased.js?v=$rand" type="text/javascript"></script>
+   <script src="$domainwv/aktivasi/js/instascan.min.js" type="text/javascript"></script>
+   <script src="$domainwv/aktivasi/js/otp.js?v=$rand" type="text/javascript"></script>
+   
+<script type="text/javascript" >
+
+var str=0;
+var idrow = 6;
+var iddata = 1; 
+var usertype=$usertype;
+
+function validateFormOnSubmit(theForm) {
+	var reason = "";
+	var i=1;
+	 reason += validateFix("e_mid",document.getElementById('mid'), 15);
+	 reason += validateName("e_name",document.getElementById('name'));
+	 iddata=document.getElementById('jml_tid').value;
+	 for(i=1; i<=iddata;i++){
+		 reason += validateFix("e_tid"+i,document.getElementById('tid'+i), 8);
+
+	 }
+	  if (reason != "") {
+	    
+	    return false;
+	  }
+
+	  return true;
+	}
+	
+function validateFix(id,fld,len) {
+    var error = "";
+    var illegalChars = /\W/; // allow letters, numbers, and underscores
+ 
+    if (fld.value.length != len) {
+		$("#"+id).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+		
+        error = "<span class=\"glyphicon glyphicon-remove form-control-feedback\"></span>Must "+len+" Character\n";
+    	document.getElementById(id).innerHTML=error;
+    	
+    } else if (illegalChars.test(fld.value)) {
+        error = "The username contains illegal characters \n";
+        document.getElementById(id).innerHTML=error;
+        
+    } 
+    else{
+        fld.style.background = 'white';
+		$("#"+id).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+            document.getElementById(id).innerHTML="<span class=\"glyphicon glyphicon-ok form-control-feedback\"></span>";
+
+    }
+    return error;
+}
+
+function validateEmail(id) {
+    var error = "";
+    var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    var email=$("#email").val();
+	if (!regex.test(email)) {
+		$("#"+id).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+		
+        error = "<span class=\"glyphicon glyphicon-remove form-control-feedback\"></span>Invalid Email Address\n";
+    	document.getElementById(id).innerHTML=error;
+    	
+    }  
+    else{
+    	$("#email").css("background-color","white");
+		$("#"+id).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+            document.getElementById(id).innerHTML="<span class=\"glyphicon glyphicon-ok form-control-feedback\"></span>";
+
+    }
+    return error;
+}
+
+function validateName(id,fld) {
+    var error = "";
+    var illegalChars = /\W/; // allow letters, numbers, and underscores
+ 	
+    if (fld.value.length < 3) {
+		$("#"+id).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+		
+        error = "<span class=\"glyphicon glyphicon-remove form-control-feedback\"></span>Panjang minimal 3 karakter\n";
+    	document.getElementById(id).innerHTML=error;
+    	
+    }  
+    else{
+
+        fld.style.background = 'white';
+		$("#"+id).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+            document.getElementById(id).innerHTML="<span class=\"glyphicon glyphicon-ok form-control-feedback\"></span>";
+
+    }
+    return error;
+}
+
+function validatePwd() {
+ 	var fld=$("#password");
+ 	var fld2=$("#password2");
+	
+    if (fld2.val().length > 0) {
+    	if (fld2.val() != fld.val()){
+    		fld2.css("background-color","white");
+    		document.getElementById('labelconfirmpassword').style.color = "black";
+    		$('#e_password2').closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+            document.getElementById("e_password2").innerHTML="<span class=\"glyphicon glyphicon-ok form-control-feedback\">Password tidak sama</span>";
+    	}
+    	else{
+    		fld2.css("background-color","white");
+    		document.getElementById('labelconfirmpassword').style.color = "black";
+            $('#e_password2').closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+            document.getElementById("e_password2").innerHTML="<span class=\"glyphicon glyphicon-remove form-control-feedback\"></span>";
+    	}
+    }else{
+    	fld2.css("background-color","white");
+    	document.getElementById('labelconfirmpassword').style.color = "black";
+        $('#e_password2').closest('.form-group').removeClass('has-success has-feedback').removeClass('has-error has-feedback');
+            document.getElementById("e_password2").innerHTML="";
+
+    }
+    
+}
+function tambah(){
+var x=document.getElementById('tidtambah');
+iddata++;
+if(iddata==2){
+	x.innerHTML="<div id='ttid"+(iddata)+"'><div  class=\"form-group\"><label class=\"control-label col-sm-3 input-md\" for=\"TID "+iddata+"\">TID "+iddata+":</label><div class=\"col-sm-2\"><input type ='text' class=\"form-control input-md\" id='tid"+iddata+"' onchange='validateFix(\"e_tid"+iddata+"\",this,8)' name='tid"+iddata+"' maxlength='8'/><font color=red><div id='e_tid"+iddata+"'></div></font></div><div class=\"col-sm-4\">	<select name='mcode"+iddata+"' class=\"form-control input-md\"><option value='6012' selected='selected'>POS</option><select></div></div><div id='ttid"+(iddata+1)+"'></div><div>";
+}else
+{
+    var j=document.getElementById('ttid'+iddata);
+	j.innerHTML="<div class=\"form-group\"><label class=\"control-label col-sm-3 input-md\" for=\"TID "+iddata+"\">TID "+iddata+":</label><div class=\"col-sm-2\"><input type ='text' class=\"form-control input-md\" id='tid"+iddata+"' onchange='validateFix(\"e_tid"+iddata+"\",this,8)' name='tid"+iddata+"' maxlength='8'/><font color=red><div id='e_tid"+iddata+"'></div></font></div><div class=\"col-sm-4\">	<select name='mcode"+iddata+"' class=\"form-control input-md\"><option value='6012' selected='selected'>POS</option><select></div></div><div id='ttid"+(iddata+1)+"'></div>";
+}
+
+document.getElementById('jml_tid').value=iddata;
+ 
+idrow++;
+
+}
+ 
+function hapus(){
+if(iddata>1){
+var j=document.getElementById('ttid'+iddata);
+j.innerHTML="";
+iddata--;
+}
+}
+
+function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}    
+</script>
+
+<script type="text/javascript">
+
+	$(window).on('load', function() {
+	      $(".loader").delay(1700).fadeOut("slow");
+	});
+		
+     jQuery(document).ready(function($) {
+
+       $('#password').password();
+       $('#password').on('password.text', (e, text, score) => {
+   			str=score
+       })
+
+     });
+ </script>
+
+<style type="text/css">
+
+.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('$domainwv/img/loading.gif') 50% 50% no-repeat rgb(249,249,249);
+
+}
+/*checkboxstl///////////////////////////////////////////////////////////////////////////////////*/
+
+	.swal2-modal .swal2-content {
+            font-size: 16px;
+        }
+        
+        @media ( min-width: 600px) {
+            #main {
+                width: 60%;
+            }
+        }
+        
+
+	.checkbox.checbox-switch {
+	    padding-left: 0;
+	}
+	
+	.checkbox.checbox-switch label,
+	.checkbox-inline.checbox-switch {
+	    display: inline-block;
+	    position: relative;
+	    padding-left: 0;
+	}
+	.checkbox.checbox-switch label input,
+	.checkbox-inline.checbox-switch input {
+	    display: none;
+	}
+	.checkbox.checbox-switch label span,
+	.checkbox-inline.checbox-switch span {
+	    width: 35px;
+	    border-radius: 20px;
+	    height: 18px;
+	    border: 1px solid #dbdbdb;
+	    background-color: rgb(255, 255, 255);
+	    border-color: rgb(223, 223, 223);
+	    box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset;
+	    transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;
+	    display: inline-block;
+	    vertical-align: middle;
+	    margin-right: 5px;
+	}
+	.checkbox.checbox-switch label span:before,
+	.checkbox-inline.checbox-switch span:before {
+	    display: inline-block;
+	    width: 16px;
+	    height: 16px;
+	    border-radius: 50%;
+	    background: rgb(255,255,255);
+	    content: " ";
+	    top: 0;
+	    position: relative;
+	    left: 0;
+	    transition: all 0.3s ease;
+	    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+	}
+	.checkbox.checbox-switch label > input:checked + span:before,
+	.checkbox-inline.checbox-switch > input:checked + span:before {
+	    left: 17px;
+	}
+	
+	
+	/* Switch Success */
+	.checkbox.checbox-switch.switch-success label > input:checked + span,
+	.checkbox-inline.checbox-switch.switch-success > input:checked + span {
+	    background-color: rgb(40, 167, 69);
+	    border-color: rgb(40, 167, 69);
+	    box-shadow: rgb(40, 167, 69) 0px 0px 0px 8px inset;
+	    transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;
+	}
+	.checkbox.checbox-switch.switch-success label > input:checked:disabled + span,
+	.checkbox-inline.checbox-switch.switch-success > input:checked:disabled + span {
+	    background-color: rgb(153, 217, 168);
+	    border-color: rgb(153, 217, 168);
+	    box-shadow: rgb(153, 217, 168) 0px 0px 0px 8px inset;
+	}
+/*checkboxstl///////////////////////////////////////////////////////////////////////////////////*/
+
+@media ( min-width : 600px) {
+	#main {
+		width: 60%;
+	}
+}
+
+.emojione {
+	width: 20px;
+	height: 20px;
+}
+
+/* better progress bar styles for the bootstrap demo */
+.pass-strength-visible input.form-control, input.form-control:focus {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.pass-strength-visible .pass-graybar, .pass-strength-visible .pass-colorbar,
+	.form-control:focus+.pass-wrapper .pass-graybar, .form-control:focus+.pass-wrapper .pass-colorbar
+	{
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+</style>
+
+</head>
+<body style="background: url($domainwv/aktivasi/img/home-image-blur.jpg) repeat center center fixed; -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+  
+  <div class="loader"></div>
+	
+<link href="$domainwv/aktivasi/css/starter-template.css" rel="stylesheet">
+
+	#parse("repository:fs_repository://inc/info.html")
+	#parse("repository:fs_repository://inc/header.html")
+
+		<div class="col-md-6 con" >
+			#if($result == "" || $result == 401 || $result == 402 || $result == 403 || $result == 404 || $result == 405 || $result == 406 || $result == 407 || $result == 408)
+				<div class="form-horizontal" >
+					<div class="panel panel-default" >
+						<div class="panel-body">
+							<h2 align="center">$result</h2>
+						</div>
+					</div>
+				</div>				
+			#else
+			<!-- <div class="page-header">		
+			<h3 style="color: white">Aktivasi</h3>
+			</div>
+			 -->
+			
+	<div class="form-horizontal" >
+		<div class="panel panel-default" >
+			<div class="panel-heading clearfix">
+				<b>Form Aktivasi</b>
+			</div>
+				<div class="panel-body" id="formAktivasi">
+					<input type="hidden" name="preid" value="$preid" id="preid">
+					<input type="hidden" name="sessionid" value="$sessionid" id="sessionid">
+					<input type="hidden" name="sessionkey" value="$sessionkey" id="sessionkey">
+					<div class="form-group" >
+						<label class="control-label col-sm-4 input-md" for="Merchant Name">Email:</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control input-md"
+								#if ($email != "") 
+								value="$email"
+								readonly="true"
+								#end
+								id='email'
+								onkeyup="validateEmail('e_email')" name="email" disabled> <font
+								color=red><div id="e_email"></div></font>
+								<font
+								color=red><div id="null_email"></div></font>
+						</div>
+					</div>
+						    
+					<div class="form-group">
+						<label for="inputCode" class="control-label col-sm-4 input-md">Verifikasi Email:
+						<font color=green><div id="notif_handphone" style="font-size: 10px;"></div></font>
+						<font color=red><div id="e_handphone" style="font-size: 10px;"></div></font>
+						    
+						 </label>
+						 <div class="col-sm-8" style="display: flex;">
+						      <input type="text" class="form-control" id="inputVer" placeholder="Kode" maxlength="6" onkeypress="return isNumberKey(event)"  required>
+						      <div class="input-group-append" style="display: block;">
+							  	<input class="btn btn-success" type="button" id="reqVer" onClick="otp_email('$domainwv')" value="Kirim Kode Verifikasi"></input>
+							  </div>
+						 </div>
+						 <label for="nit" class="col-sm-4 col-form-label" style="max-height: 0px; padding: 0px 0px 0px 0px !important;"></label>
+						 <div class="col-sm-8">
+						     <small id="note otp" class="form-text text-muted" style="padding-left: 15px;">*Tunggu 1 menit untuk kirim ulang Kode Verifikasi.</small>
+						     <font color=red><div id="null_verifikasi"></div></font>
+						 	 <font color=red><div id="e_verifikasi"></div></font>
+						 </div>
+						
+					</div>
+			
+					<div class="form-group">
+						<label class="control-label col-sm-4 input-md" for="Name" id="labelusername">Username:</label>
+						<div class="col-sm-8">
+							<input type="text" style="text-transform: lowercase;" class="form-control input-md" id="username" onkeypress="uniCharCode(event)" onkeyup="usernameCheck('$domainwv')" maxlength="30" name="username" placeholder="Username"> 
+								<font size="1"><i>karakter diperbolehkan:<br> titik, underscore, lowercase, angka</i></font>
+								<font color=red><div id="null_name"></div></font>
+								<font color=red><div id="e_name"></div></font>
+								<font color=red><div id="same_name"></div></font>
+								<font color=green><div id="notsame_name"></div></font>
+						</div>
+						
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-4 input-md" for="Merchant password" id="labelpassword">Buat Password:</label>
+						<div class="col-sm-8">
+							<div class="password">
+								<input type="password" class="form-control input-md"
+									onkeyup="validatePwd()" id='password' name="password" placeholder="Password baru"> 
+									<font color=red><div id="null_password"></div></font>
+									<font color=red><div id="e_password"></div></font>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-4 input-md" for="Merchant passwordconfirm" id="labelconfirmpassword" >Confirm
+							Password:</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control input-md"
+								onkeyup="validatePwd()" id='password2' name="password2" placeholder="Ulangi password">
+								<font color=red><div id="null_password2"></div></font>
+								<font color=red><div id="e_password2"></div></font>
+								<font color=red><div id="null_confirm"></div></font>
+						</div>
+					</div>
+				
+					#if ($i_ttd != "") 
+					<input type="hidden" id="i_ttd" maxlength="16" value="$i_ttd" name="i_ttd">
+					#else 
+					<input type="hidden" id="i_ttd" maxlength="16" value="" name="i_ttd">
+					<div class="form-group">
+						<label class="control-label col-sm-4 input-md" for="Merchant Signature" id="labelsignature">Draw Signature</label>
+						<div class="col-sm-8">
+							<input type="input" class="form-control input-md" id='sgn' name="sgn" disabled>
+							<font color=red><div id="null_sgn"></div></font>
+							<font color=red><div id="e_sgn"></div></font>
+						</div>
+					</div>
+					
+					<div class="form-group">
+					<label class="control-label col-sm-4 input-md"></label>
+						<div class="col-sm-8">
+						<button class="btn btn-info" type="button" data-toggle="modal" data-target="#signModal">Sign</button>
+						</div>
+					</div>
+					#end
+					<div class="form-group">
+            		<label class="control-label col-sm-4 input-md" for="sk"> </label>
+            		<div class="col-sm-5">
+              		<div class="checkbox checbox-switch switch-success">
+	                	<label>
+	                  		<input type="checkbox" name="sk" id="sk" onclick="cekSk()">
+	                  		<span></span>
+	                  		<a href="#" type="button" data-toggle="modal" data-target="#termModal">Saya telah membaca dan menyetujui syarat dan ketentuan yang berlaku</a>
+	                	</label>
+	                	<font color=red><div id="null_sk"></div></font>
+              		</div>
+            		</div>
+          			</div>
+					<hr>
+	
+					<div class="panel-footer">
+					
+					<div class="pull-right">				
+						<button type="reset" id="reset" class="btn btn-primary" onclick="return cleardata();">Reset</button>
+						&nbsp;&nbsp;
+						
+						<button class="btn btn-info" type="button" onclick="return prosesaktivasi_session_ver('$domainwv');" id="prosesaktivasi">Proses</button>
+						<button class="btn btn-info" type="button" id="disabledbtn" disabled>Memproses Aktivasi</button>
+						
+					</div>
+					<div id="e_proses" style="color:red"></div>
+					<div class="clearfix"></div>
+					</div>
+						
+				</div>
+
+
+				<div class="panel-body" id="formSukses">
+					<h2 align="center">	 Berhasil</h2>
+				</div>
+		</div>
+		
+		</div>
+		</div>
+		
+		<div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="signModalLabel" data-backdrop="static" data-keyboard="false">
+  			<div class="modal-dialog modal-lg" role="document">
+    			<div class="modal-content">
+	      			<div class="modal-header">
+	      	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          			<h4 class="modal-title">Silahkan Tandatangan Di bawah ini:</h4>
+					</div>
+	      			<div class="modal-body">
+						<div class="wrapper">
+							<canvas id="signature-pad" class="signature-pad"  style="touch-action: none;"></canvas>
+							<font color="red"><div id="e_tandatangan"></div></font>
+						</div>
+		       		</div>
+		       		<div class="modal-footer">
+			     		<div class="pull-left">
+							<button id="clear"  type="button" class="btn btn-danger" data-action="clear">Hapus</button>
+		       			</div>
+		       			<div class="pull-right">
+							<button id="clear"  type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+		       			</div>
+					</div>
+       			</div>
+     		</div>
+      	</div>
+      	<!-- BATAS NEGARA -->
+      	<div class="modal fade" id="termModal" tabindex="-1" role="dialog" aria-labelledby="termLabel" style="display: none;">
+	    <div class="modal-dialog modal-lg" role="document">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">x</button>
+		          <h4 class="modal-title">Terms and Condition</h4>
+		        </div>
+		        <div class="modal-body">
+		          <div class="wrapper" style="width: 100% !important; height: 100% !important; padding: 15px 15px 15px 15px; background-color: white"> 
+				<p class="western" style="margin-bottom: 0.14in"><b>SYARAT DAN
+				KETENTUAN LAYANAN APLIKASI DIGISIGN</b></p>
+				<p class="western" align="justify" style="margin-bottom: 0.14in">Sebagai
+				pengguna layanan Digisign yang belum memiliki akun pada Aplikasi
+				Digisign, pengguna diharuskan melakukan registrasi pada layanan
+				aplikasi Digisign, dengan mengisi form registrasi. ketentuan Digisign
+				ini sangat kami perlukan untuk memverifikasi keotentikan dan
+				keabsahan dari identitas pengguna layanan ini, data yang diperlukan
+				dan beberapa ketentuan yang harus disetujui oleh pengguna layanan
+				digisign, antara lain:</p>
+				<p class="western" align="justify" style="margin-bottom: 0.14in"><b>1.
+				Data Pengguna</b></p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2; page-break-before: auto">
+				1.1 Mengisi secara lengkap data pribadi pengguna pada halaman
+				registrasi. Mengirimkan gambar kartu ID nasional pengguna (wajib),
+				gambar kartu NPWP pengguna (bila ada), gambar swafoto pengguna
+				(wajib) dan contoh tandatangan pengguna (wajib).</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.2 Pengguna harus mengisi email dan nomor handphone milik nasabah
+				sendiri. Segala akibat yang timbul karena didaftarkannya email
+				ataupun nomor handphone pihak lain menjadi tanggung jawab pengguna.</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.3 Pengguna memberikan persetujuan kepada kami untuk menyimpan data
+				pribadi kartu ID nasional pengguna dalam bentuk terenkripsi dari
+				pusat data kami.</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.4 Penguna memberikan persetujuan kepada kami untuk melakukan proses
+				verifikasi nomor ID nasional pengguna.</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.5 Pengguna memberikan persetujuan kepada kami untuk memberikan data
+				pribadi pengguna kepada lembaga penegak hukum di bawah permintaan
+				resmi sesuai dengan hukum Indonesia.</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.6 Dengan ini pengguna menyetujui bahwa seluruh data pribadi yang
+				diunggah adalah benar.</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.7 Password dan kode verifikasi via SMS maupun email (OTP) bersifat
+				rahasia sehingga pengguna berkewajiban menjaga kerahasiaannya.
+				Pengguna setuju untuk bertanggunag jawab penuh terhadap password
+				maupun kode verifikasi via SMS maupun email (OTP), termasuk dalam hal
+				ini penyalahgunaan terhadap password atau kode verifikasi tersebut.</p>
+				<p class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				1.8 Pengguna wajib memberitahukan Digigsign jika ada perubahan data
+				pribadi.</p>
+				<p lang="en-US" class="western" align="justify" style="margin-bottom: 0.14in">
+				<b><span lang="en-US">2. Update dan Informasi.</span></b></p>
+				<p lang="en-US" class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2; page-break-before: auto">
+				2.1 Kami dapat merevisi Persyaratan ini atau persyaratan tambahan
+				lainnya dan ketentuan tambahan yang relevan dengan Layanan Digisign
+				tertentu dari waktu ke waktu untuk mencerminkan perubahan dalam
+				undang- undang (hukum) atau pada layanan Digisign. Kami akan
+				memposting persyaratan yang telah direvisi di Situs dengan tanggal
+				"terakhir diperbarui". <b>HARAP TINJAU SITUSNYA UNTUK
+				MENDAPATKAN PEMBERITAHUAN TEPAT WAKTU UNTUK REVISI APA PUN. JIKA
+				PENGGUNA LANJUTKAN UNTUK MENGGUNAKAN LAYANAN DIDISIGN SETELAH REVISI
+				MULAI BERLAKU, PENGGUNA SETUJU UNTUK TERIKAT DENGAN PERSYARATAN YANG
+				DINYATAKAN</b>. Pengguna setuju bahwa kami tidak bertanggung jawab
+				kepada pengguna atau pihak lainnya manapun untuk setiap modifikasi
+				Persyaratan.</p>
+				<p lang="en-US" class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				2.2 Pengguna setuju untuk menerima secara elektronik semua informasi
+				yang kami berikan sehubungan dengan Layanan Digisign, termasuk
+				melalui email, sms, notifikasi dalam aplikasi atau dengan memasangnya
+				di Situs atau melalui setiap Layanan Digisign. Pengguna setuju bahwa
+				semua informasi yang kami berikan kepada Anda secara elektronik
+				memenuhi persyaratan hukum bahwa komunikasi semacam itu tertulis dan
+				Anda setuju untuk menyimpan informasi kontak Akun Anda saat ini.</p>
+				<p lang="en-US" class="western" align="justify" style="margin-bottom: 0.14in">
+				<b><span lang="en-US">3. Syarat dan Ketentuan layanan tandatangan</span></b></p>
+				<p lang="en-US" class="western" align="justify" style="margin-left: 0.56in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2; page-break-before: auto">
+				3.1 Pengguna berkewajiban membaca atau memastikan isi dokumen
+				elektronik yang diterima sebelum menandatanganinya. Pengguna
+				menyetujui semua isi dokumen elektronik yang telah ditandatangani
+				secara digital. Pengguna tidak dapat menyangkal tanda tangan digital
+				pengguna yang telah melekat pada dokumen elektronik.</p>
+				<p lang="en-US" class="western" align="justify" style="margin-left: 0.56in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				3.2 Pengguna setuju untuk tidak memberikan akses akun Digisignnya
+				kepada orang lain. Pengguna setuju bertanggung jawab penuh terhadap
+				akun Pengguna, termasuk dalam hal ini penyalahgunaan terhadap akun
+				Pengguna tersebut.</p>
+				<p lang="en-US" class="western" style="margin-bottom: 0.14in"><b><span lang="en-ID">4.
+				Jaminan Pelanggan</span></b></p>
+				<p lang="en-US" class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2; page-break-before: auto">
+				<span lang="en-ID">4.1 Digisign tidak akan menggunakan data pribadi
+				pengguna yang diperoleh dari kartu ID data pribadi pengguna untuk
+				tujuan lain di luar layanan Digisign (Digital Signature).</span></p>
+				<p lang="en-US" class="western" align="justify" style="margin-left: 0.5in; margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				<span lang="en-ID">4.2 Data pribadi pengguna hanya dapat diakses oleh
+				unit verifikasi kami selama proses otentikasi dan hanya dapat diakses
+				berdasarkan persetujuan pengguna.4.3 Dalam kasus pelanggaran keamanan
+				yang memengaruhi privasi data pribadi pengguna, kami akan memberi
+				tahu pengguna melalui, telepon, pesan singkat atau alamat email
+				terdaftar penguna dalam waktu 1 x 24 jam.</span></p>
+				<p lang="en-US" class="western" align="justify" style="margin-bottom: 0.14in">
+				<br>
+				<br>
+				
+				</p>
+				<p class="western" align="center" style="margin-bottom: 0.14in">Bahwa
+				seluruh dokumen apa pun yang diunggah oleh penguna, yang ditujukan
+				kepada pengguna, dan / atau diunggah oleh orang atau badan lain yang
+				diarahkan kepada pengguna dijamin menggunakan keamanan enkripsi
+				dimana Digisign atau orang lain atau badan hukum lain yang terlibat
+				dalam pengunggahan, pengarahan, komentar dan / atau penandatanganan
+				dokumen itu sendiri, tidak dapat melihat isi dokumen</p>
+				<p lang="en-US" class="western" align="center" style="margin-bottom: 0.14in">
+				<br>
+				<br>
+				
+				</p>
+				<p class="western" align="center" style="margin-bottom: 0.14in">Bahwa
+				dengan ini, Pengguna layanan Digisign setuju atas seluruh persyaratan
+				dan ketentuan layanan ini.</p>
+				<p lang="en-US" class="western" align="center" style="margin-bottom: 0.14in; line-height: 115%; orphans: 2; widows: 2">
+				<br>
+				<br>
+				
+				</p>
+				
+				 </div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+      	<!-- BATAS PROPINSI -->
+      	<div class="modal fade" id="notifproses" tabindex="-1" role="dialog" aria-labelledby="notifprosesmodal" data-backdrop="static" data-keyboard="false">
+  			<div class="modal-dialog modal-sm" role="document">
+    			<div class="modal-content">
+	      			<div class="modal-header">
+	      	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          			<h4 class="modal-title">Response Message:</h4>
+					</div>
+	      			<div class="modal-body">
+						<p align="center" id="prosesmessage">Aktivasi Sukses</p>
+		       		</div>
+		       		<div class="modal-footer">
+		       			<div class="pull-right">
+							<button id="clear"  type="button" class="btn btn-success" data-dismiss="modal">Tutup</button>
+		       			</div>
+					</div>
+       			</div>
+     		</div>
+      	</div>
+      	
+ 
+		<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlert">
+						<h5 class="modal-title">Memproses Data Aktivasi</h5>
+						<div class="progress">
+						  <div class="progress-bar progress-bar-striped active" role="progressbar"
+						  aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+      	       	
+      	
+    	<div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="otpModalLabel" data-backdrop="static" data-keyboard="false">
+  			<div class="modal-dialog modal-md" role="document">
+    			<div class="modal-content">
+	      			<div class="modal-header">
+	      	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          			<h4 class="modal-title">Request OTP</h4>
+					</div>
+	      			<div class="modal-body">
+					<div class="col-md-8">
+					<div class="form-horizontal" >
+					<div class="form-group">
+						<label class="control-label col-sm-4 input-md" for="Merchant Name">No HP.</label>
+						<div class="col-sm-7">
+							<input type="hidden" class="form-control input-md" value="$idmitra" readonly="true" id="nomnom">
+							<input type="hidden"class="form-control input-md"  value="$preid" id="preid">
+							<input type="text" class="form-control input-md"
+
+								#if ($nohp != "") 
+								value="$nohp"
+								#end
+								readonly="true" 
+								 
+								id='handphone'
+								name="handphone" placeholder="62856 / 0856"> 
+								<font color=red><div id="e_handphone"></div></font>
+								<font color=green><div id="notif_handphone"></div></font>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-4 input-md">Input OTP</label>
+						<div class="col-sm-7">
+							<input type="input" maxlength="6" onkeypress="return isNumberKey(event)" class="form-control input-md" id='otp' name="otp">
+							<font color=red><div id="e_otp"></div></font>
+						</div>
+					</div>
+						
+		       		<div class="form-group">
+						<label class="control-label col-sm-4 input-md"></label>
+						<div class="col-sm-6">
+							<input class="btn btn-info" type="button" id="btnotp"  value="Request OTP" onclick="otp('$domainwv')" />
+						</div>
+						
+					</div>	
+		       		</div>
+		       		</div>
+		       		</div>
+		       		<div class="modal-footer">
+					<div class="pull-right">
+							<button id="prosesOTP" type="button" id="png" class="btn btn-success" onclick="return submitOTP_session('$domainwv');" data-loading-text="Checking OTP...")>Proses</button>
+					</div>
+					<div class="clearfix"></div>
+
+					</div>
+       			</div>
+     		</div>
+      	</div>
+
+
+</body>
+</html>
+
+	<!-- Configure a few settings and attach camera -->
+	<script language="JavaScript">
+	var proseskeotp=document.getElementById('sk');
+	var proseskeotpbtn = document.getElementById('prosesaktivasi');
+	proseskeotp.onchange = function() {
+		proseskeotpbtn.disabled = !this.checked;
+	};
+	
+   	function uniCharCode(e) {
+          var char = e.which || e.keyCode;
+          //if(char==64 || char ==32)
+                    
+          var myArray = [47,92,123,125,43,61,124,91,93,60,62,63,42,38,94,37,36,35,33,126,96,34,39,58,59, 64, 32, 40, 41, 44, 45];
+          var mySet = new Set(myArray);
+          var hasKey = mySet.has(char);
+
+          if(hasKey)
+          {
+              e.preventDefault();
+          }
+          
+    }
+	   
+	function cleardata()
+	{
+		$("#username").val("");	
+		$("#password").val("");
+		$("#password2").val("");
+	}
+	
+	function proOtp(){
+		
+		var pro = 0;
+		
+		if($("#password").val().length == 0){
+			pro = 1;
+			swal("", "Password tidak boleh kosong!", "error");
+		} else
+
+		if ($("#password").val() != $("#password2").val()){
+			pro = 1;
+			swal("", "Password tidak sama!", "error");
+		}else if (str < 34) {
+			pro = 1;
+			swal("", "Password lemah!", "error");
+		}
+		
+		var is_ttd = document.getElementById("i_ttd").value;
+		
+		if(is_ttd == ""){
+		if (signaturePad.isEmpty()) {
+			pro = 1;
+			swal("", "Please provide a signature first!", "error");
+		}
+		}
+		
+		if (pro == 0){	
+		$("#otpModal").modal('show');
+		}
+	}
+
+	$(document).ready(function() {
+		document.getElementById('labelsignature').style.color = "black";
+		document.getElementById('labelconfirmpassword').style.color = "black";
+		document.getElementById('labelusername').style.color = "black";
+		document.getElementById('labelpassword').style.color = "black";
+		$('#prosesaktivasi').attr('disabled',true);
+		
+    function detectmob() { 
+    	 if( navigator.userAgent.match(/Android/i)
+    	 || navigator.userAgent.match(/webOS/i)
+    	 || navigator.userAgent.match(/iPhone/i)
+    	 || navigator.userAgent.match(/iPad/i)
+    	 || navigator.userAgent.match(/iPod/i)
+    	 || navigator.userAgent.match(/BlackBerry/i)
+    	 || navigator.userAgent.match(/Windows Phone/i)
+    	 ){
+    		 document.getElementById('wb').style.display = "none";
+    		 document.getElementById('a_cam').style.display = "none";
+    		 document.getElementById("wbf").style.display = "inline";
+    	  }
+    	 else {
+    		 document.getElementById('wb').style.display = "inline";
+    		 document.getElementById('a_cam').style.display = "inline";
+    		 document.getElementById("wbf").style.display = "none";
+    	  }
+    }
+    if(document.getElementById('wb')){
+    	detectmob();
+    }
+    
+});
+</script>
+<!-- 
+<script src="${request.getContextPath()}/js/signature_pad.js"></script>
+<script src="${request.getContextPath()}/js/ttd.js"></script>
+ -->
+   <script src="$domainwv/aktivasi/js/signature_pad.js"></script>
+  <script src="$domainwv/aktivasi/js/ttd.js?v=$rand"></script>
+  <script src="$domainwv/aktivasi/js/kTrx.js"></script>
+	#end
+		#end

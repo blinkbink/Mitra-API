@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.jpos.ee.RevisionEntry" table="revision"
+		discriminator-value="   ">
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
+		<discriminator column="subclass" type="string"
+			length="16" />
+
+		<property name="date" type="timestamp" />
+		<property name="info" type="text" />
+		<many-to-one name="author" class="org.jpos.ee.User"
+			column="author" />
+		<subclass name="org.jpos.ee.UserRevisionEntry"
+			discriminator-value="user">
+			<many-to-one name="user" class="org.jpos.ee.User"
+				column="eeuser" />
+		</subclass>
+		<subclass name="org.jpos.ee.StatusRevisionEntry"
+			discriminator-value="status">
+			<many-to-one name="status"
+				class="org.jpos.ee.status.Status" column="status" />
+		</subclass>
+		<!-- <subclass name="org.jpos.ee.MerchantRevisionEntry" discriminator-value="merchant"> 
+			<many-to-one name="merchant" class="org.jpos.ee.Merchant" column="merchant" 
+			/> </subclass> -->
+	</class>
+</hibernate-mapping>    
+

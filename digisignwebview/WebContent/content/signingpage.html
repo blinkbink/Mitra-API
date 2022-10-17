@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Tandatangan Dokumen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1,maximum-scale=1">
+
+<script src="$domainwv/js/pdf.min.js"></script>
+<link rel="icon" href="$domainwv/img/favicon.ico">
+<script
+	src="$domainwv/js/popper.min.js"
+	crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="$domainwv/js/jquery-ui.min.css">
+<script type="text/javascript" src="$domainwv/js/cdnjquery.min.js"></script>
+<script type="text/javascript" src="$domainwv/js/cdnjquery-ui.min.js"></script> 
+	
+<script type="text/javascript" src="$domainwv/js/cdnbootstrap.min.js"></script>	
+<script type="text/javascript" src="$domainwv/js/cdnjquery.ui.touch-punch.min.js"></script>
+
+<script type="text/javascript" src="$domainwv/js/submitV.js?v=$rand"></script>
+<script type="text/javascript" src="$domainwv/js/color_css.js"></script>
+<script type="text/javascript" src="$domainwv/js/md5.js"></script>
+<script type="text/javascript" src="$domainwv/js/otp.js?v=$rand"></script>
+<script type="text/javascript" src="$domainwv/js/pdfComp.js"></script>
+<script type="text/javascript" src="$domainwv/js/pdf.js"></script>
+<script type="text/javascript" src="$domainwv/js/pdf/pdf.worker.js"></script>
+<script type="text/javascript" src="$domainwv/js/savePWD.js?v=$rand"></script>
+<link rel="stylesheet" href="$domainwv/css1/bootstrap.min.css">
+
+<script>
+
+var lefts = 0;
+var tops = 0;
+var widths = 0;
+var heights = 0;
+var def_style;
+var sign= 0;
+var isSign=$flag;
+var isApproval=$approval;
+var usersign=$usersign;
+var visible=$visible;
+var size=$size;
+var jmlttd=0;
+var mitra=$mitra;
+var statususer=$statususer;
+var zo=0;
+var zomx = 5;
+var zimx = 0;
+function signProcess(){
+	$('#sgn-user').removeClass('sign-box').addClass('sign-box2');
+	$('#sgnClick').hide();
+	$('#sgnImg').show();
+	sign=1;
+}
+
+//pjg ttd 165 x130
+$(function () {
+				$("#prosesSign").on('click', function() {
+					
+					if(visible==0)
+					{
+						sign=1;
+					}
+					if($by_pass_click)
+					{
+						sign=1;
+					}
+					for (x in jsonText) {
+						if(jsonText[x].sgn=="0") {
+							sign=0;
+							break;
+						}
+					}
+					if(isApproval==true){
+						sign=1;
+					}
+						
+					if(cekComplete()){
+						//$("#alertKonfirmasi").modal('show');
+						
+						var email = null;
+						if ("$cert" != "05" && "$cert" != "G1")
+                        {
+                        	email = $("#inputUser").val();
+                        }
+                        else
+                        {
+                        	email = $("#inputUserNewCert").val();
+                        }
+						
+						dataUser.usersign=email;
+						checkDocSign("$domainwv", "$cert");
+					}
+					else{
+						if(size>0){
+							//alertDanger("Lokasi tandatangan belum lengkap. Silakan lengkapi terlebih dahulu, "+jmlttd+" tanda tangan dari "+size);
+							alertDanger("Anda belum menandatangani perjanjian. Silahkan tandatangani perjanjian terlebih dahulu");
+						}
+						else {
+							alertDanger("Dokumen sudah ditandatangani.");
+						}
+					}
+				});
+
+				$("#main-body").hide();
+
+				$("#saveLocation").on('click', function() {
+					//DS.SubmitSignDoc();
+					loading();
+					//dataUser.auth=DS.getPass();
+					saveSign();
+				});
+				
+				//$("#formSign").on("submit", function(e){
+				$('#setuju').click(function(e) {
+					var otpexist1 = 0;
+					var passexist1 = 0;
+					if ($("#inputCode").val()=='') {
+						otpexist1 = 0;
+						$("#inputCode").attr("placeholder", "Mohon Diisi").val("").focus().blur();
+						document.getElementById("inputCode").style.borderColor = "red";
+						$("#null_otp").text("Mohon isi Kode OTP");
+					}else{
+						otpexist1 = 1;
+					}
+					
+					if ($("#inputPassword").val()=='') {
+						passexist1 = 0;
+						$("#inputPassword").attr("placeholder", "Mohon Diisi").val("").focus().blur();
+						document.getElementById("inputPassword").style.borderColor = "red";
+						$("#gagal_pass").text("Mohon isi Password Anda");
+					}else{
+						passexist1 = 1;
+					}
+					if(otpexist1==1 && passexist1==1){
+					//var userpwd = hex_md5($("#inputUser").val()+$("#inputPassword").val());
+					var userpwd = hex_md5($("#username").val()+$("#inputPassword").val());
+					//var userpwd = $("#pwd_user").val();					
+					var email = $("#inputUser").val();
+					var otp = $("#inputCode").val();
+					var hasil = "tolak";
+					var reason = null;
+					console.log("tombol setuju yang ditekan");
+					var c = document.getElementById('renewal');
+					var checkme = document.getElementById('checkme');
+					
+					dataUser.userpwd=userpwd;
+					dataUser.otp=otp;
+					dataUser.usersign=email;
+					dataUser.mitra=mitra;
+					dataUser.reason=reason;
+					dataUser.cert = '$cert';
+					
+					if(c)
+					{
+						dataUser.renewal = c.checked;
+					}
+					else
+					{
+						dataUser.renewal = false;
+					}
+					
+					if(checkme)
+					{
+						dataUser.checkme = checkme.checked;
+					}
+					else
+					{
+						dataUser.checkme = false;
+					}
+					
+					$("#alertKonfirmasi").modal('hide');
+					loading();
+					prosesSignMitraV_session("$domainwv");
+					return false;
+					}else{
+						console.log("ada yang kosong");
+					}
+				});
+				
+				$('#tolak').click(function(e) {
+					var otpexist = 0;
+					var passexist = 0;
+					if ($("#inputCode").val()=='') {
+						otpexist = 0;
+						$("#inputCode").attr("placeholder", "Mohon Diisi").val("").focus().blur();
+						document.getElementById("inputCode").style.borderColor = "red";
+						$("#null_otp").text("Mohon isi Kode OTP");
+					}else{
+						otpexist = 1;
+					}
+					
+					if ($("#inputPassword").val()=='') {
+						passexist = 0;
+						$("#inputPassword").attr("placeholder", "Mohon Diisi").val("").focus().blur();
+						document.getElementById("inputPassword").style.borderColor = "red";
+						$("#gagal_pass").text("Mohon isi Password Anda");
+					}else{
+						passexist = 1;
+					}
+					
+					if(otpexist==1 && passexist==1){
+					//	$('#inputCode').prop('required', true);
+					//	$('#inputPassword').prop('required', true);
+						var userpwd = hex_md5($("#username").val()+$("#inputPassword").val());
+						//var userpwd = $("#pwd_user").val();					
+						var email = $("#inputUser").val();
+						var otp = $("#inputCode").val();
+						var hasil = "tolak";
+						var reason = null;
+						
+						if($("#alasanpenolakan").val()==null){
+							reason = "alasan_null_fromuser";
+						}
+						else
+						{	
+							reason = $("#alasanpenolakan").val();
+						}
+						console.log("tombol tolak ditekan");
+						console.log(reason);
+						dataUser.userpwd=userpwd;
+						dataUser.otp=otp;
+						dataUser.usersign=email;
+						dataUser.mitra=mitra;
+						dataUser.reason=reason;
+						dataUser.cert = '$cert';
+						dataUser.renewal = false;
+						
+						$("#alertKonfirmasi").modal('hide');
+						loading();
+						prosesSignMitraV_session("$domainwv");
+						return false;
+						
+					}else{
+						console.log("ada yang kosong");
+					}
+					});
+				$("#cancelLocation").on('click', function() {
+					var text=JSON.parse('{"result":"01", "notif":"go back"}');
+					//alert(text);
+					window.parent.postMessage(text, '*');
+				});
+				
+				if (!$('#certEmpty').is(':visible')) {
+					var element = document.getElementById("navbottom");
+					element.classList.add("navclass");
+				}
+				if (!$('#alertkonfirmasi').is(':visible')) {
+					var element = document.getElementById("navbottom");
+					element.classList.add("navclass");
+				}
+				
+				$("#formSignNewCert").on("submit", function(e){
+					//var userpwd = hex_md5($("#inputUser").val()+$("#inputPassword").val());
+					var userpwd = hex_md5($("#usernameNewCert").val()+$("#inputPasswordNewCert").val());
+					//var userpwd = $("#pwd_user").val();					
+					var email = $("#inputUserNewCert").val();
+					var otp = $("#inputCodeNewCert").val();
+					var hasil = "tolak";
+					var reason = null;
+					
+					if($("#alasanpenolakan").val()==null)
+					{
+						reason = "alasan_null_fromuser";
+					}
+					else
+					{	
+						reason = $("#alasanpenolakan").val();
+					}
+					console.log("tombol tolak ditekan");
+					console.log(reason);
+					dataUser.userpwd=userpwd;
+					dataUser.otp=otp;
+					dataUser.usersign=email;
+					dataUser.mitra=mitra;
+					dataUser.reason=reason;
+					dataUser.cert = '$cert';
+					dataUser.renewal = false;
+					
+					var b = document.getElementById('agreeNewCert');
+					var d = document.getElementById('agreeNewTermCondition');
+					
+					if(b)
+					{
+						dataUser.genCert = b.checked;
+					}
+					else
+					{
+						dataUser.genCert = false;
+					}
+					
+					if(d)
+					{
+						dataUser.termCondition = d.checked;
+					}
+					else
+					{
+						dataUser.termCondition = false;
+					}
+					
+					$("#certEmpty").modal('hide');
+					loading();
+					//prosesSignMitraVWeb("$domainwv");
+					prosesSignMitraV_session("$domainwv");
+					return false;
+				});
+				
+				$("#formactive").on("submit", function(e){
+					//alert("masuk pak eko");
+					
+					var newuserpwd = hex_md5($("#inputNewUsername").val()+$("#inputNewPassword").val());
+					var newusername = $("#inputNewUsername").val();
+					var iduser=$("#inputiduser").val();
+					var renewuserpwd = hex_md5($("#inputNewUsername").val()+$("#retypeNewPassword").val());
+					
+					
+					dataUser.newuserpwd=newuserpwd;
+					dataUser.renewuserpwd=renewuserpwd;
+					dataUser.newusername=newusername;
+					dataUser.iduser=iduser;
+					
+					//loading();
+					savepwd("$domainwv");
+					$("#username").val(newusername);
+					//prosesSignMitraV("$domainwv");
+					return false;
+				});
+				
+				$("#goButton").on('click', function() {
+					 var nilainya = parseInt($('#pageText').text());
+					 $('#gotopage').val(nilainya);
+		              $('#gotoModal').modal({
+		                keyboard: true,
+		                backdrop:true
+		              });
+		             $('#gotoModal').modal('show');
+		        });
+
+		        $("#goEnter").on('click', function() {
+		        	var pg=parseInt($('#gotopage').val());
+		        	var tpg=parseInt($('#pdf-total-pages').text());
+		        	  if ( pg > tpg ){
+		            	  $('#gotoModal').hide();
+		            	  alertDanger("Tidak Boleh Lebih Dari Jumlah halaman");
+		              }else if(pg == null || pg < 1 || Number.isNaN(pg)){
+		            	  $('#gotoModal').hide();
+		            	  alertDanger("Tidak Boleh Kosong");
+		              }else{
+			              showPage(pg);
+		              }
+		             $('#gotoModal').hide();
+		        });
+				
+				$('#widget').draggable({
+
+					stop: function(event, ui) {
+
+				        // Show dropped position.
+				        var Stoppos = $(this).position();
+				        //alert("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
+				        lefts = Stoppos.left;
+				        tops = Stoppos.top;
+				    }
+				});
+				
+				$('#widget1').draggable({
+					start: function(event, ui) {
+						//$(this).css("border-style","solid");
+					},
+					
+					stop: function(event, ui) {
+						//$(this).css("border-style","dashed");
+				        // Show dropped position.
+				        var Stoppos = $(this).position();
+				        //alert("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
+				        lefts = Stoppos.left;
+				        tops = Stoppos.top;
+				    }
+				})
+				  .mouseover(function() {
+						$(this).css("border-style","solid");
+						$(this).css("border-color","red");
+				})
+				  .mouseout(function() {
+						$(this).css("border-style","dashed");
+						$(this).css("border-color","black");
+				});
+				
+				
+				$('#img1').resizable({
+					    stop: function(event, ui) {
+				        widths = ui.size.width;
+				        heights = ui.size.height;
+				        alert("width:" +widths+ " height:"+heights);
+				    }
+				});
+});
+</script>
+
+<style type="text/css">
+#upload-button {
+	width: 150px;
+	display: block;
+}
+
+#file-to-upload {
+	display: none;
+}
+
+#pdf-main-container {
+	
+}
+
+#pdf-contents {
+	display: none;
+}
+
+#pdf-meta {
+	overflow: hidden;
+}
+
+#pdf-buttons {
+	float: left;
+}
+
+#page-count-container {
+	float: right;
+}
+
+#page-bottom {
+	text-align: center;
+}
+
+#button-next {
+	float: right;
+}
+
+#button-prev {
+	float: left;
+}
+
+#pdf-current-page {
+	display: inline;
+}
+
+#pdf-total-pages {
+	display: inline;
+}
+
+#pdf-canvas {
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+	width: "100%";
+	display: none;
+}
+
+#widget1 {
+	border-style: dashed;
+	cursor: move;
+	width: 130px;
+	height: 65px;
+}
+
+#page-loader {
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	color: #999999;
+	font-size: 13px;
+}
+/* Note: Try to remove the following lines to see the effect of CSS positioning */
+.affix {
+	top: 0;
+	width: 100%;
+	z-index: 9999 !important;
+	position: fixed;
+}
+
+.affix+.container-fluid {
+	padding-top: 70px;
+}
+.button {
+	width: 300px;
+	height: 60px;
+}
+
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+
+/*
+ * Global add-ons
+ */
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+	border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+
+@media ( min-width : 768px) {
+	.sidebar {
+		width: 13%;
+		position: fixed;
+		top: 51px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 15px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+@media ( max-width : 768px) {
+	.sidebar {
+		position: top;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+	{
+	color: #fff;
+	background-color: #428bca;
+}
+
+/*
+ * Main content
+ */
+.main {
+	padding: 20px;
+}
+
+@media ( min-width : 768px) {
+	.main {
+		padding-right: 40px;
+		padding-left: 0px;
+	}
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+.placeholders {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.placeholders h4 {
+	margin-bottom: 0;
+}
+
+.placeholder {
+	margin-bottom: 20px;
+}
+
+.placeholder img {
+	display: inline-block;
+	border-radius: 50%;
+}
+
+.table tbody tr:hover td, .table tbody tr:hover th {
+	background-color: #eeeeea;
+}
+
+.table tbody tr td {
+	padding: 5px;
+}
+
+.table thead th, .table thead tr {
+	color: #fff;
+	background-color: #4377A5;
+}
+
+.panel-primary1>.panel-heading {
+	color: #fff;
+	background-color: #4377A5;
+	border-color: #4377A5;
+}
+
+.panel-primary1 {
+	border-color: #4377A5;
+}
+
+.form-group {
+	margin-bottom: 5px;
+}
+
+.modal-primary {
+	background-color: #4377A5;
+	color: white;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.modal-success {
+	background-color: #5cb85c;
+	color: white;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.modal-danger {
+	background-color: #d9534f;
+	border-color: #ac2925;
+	color: white;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#form-search {
+	
+}
+
+.sign-box {
+	border-style: dashed;
+	cursor: move;
+	width: 130px;
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5vh;
+	background-color: #ff9f80;
+}
+
+.sign-box2 {
+	border-style: none;
+	cursor: move;
+	width: 130px;
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5vh;
+	background-color: transparent;
+}
+
+#loadingPage {
+	width: 100vw;
+	height: 100vh;
+}
+
+.centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+}
+
+.modal-full {
+    min-width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+.modal-backdrop.in {
+	opacity: 0.7;
+}	
+
+
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 14px 28px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.block1 {
+  display: block;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-circle:hover {
+  
+    
+    color:white;
+  background-color: black;
+  opacity:.75;
+
+}
+
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 0px 0px;
+    border-radius: 45px;
+    text-align: center;
+    font-size: 20px;
+    
+    color:white;
+  background-color: rgba(0,0,0,.35);
+
+}
+
+.btn-circle2 {
+    width: 70px;
+    height: 40px;
+    padding: 0px 0px;
+    border-radius: 45px;
+    text-align: center;
+    font-size: 10px;
+    color:white;
+    font-weight: bold;
+  background-color: rgba(0,0,0,.35);
+
+}
+
+.btn-circle3 {
+    width: 70px;
+    height: 40px;
+    padding: 0px 0px;
+    border-radius: 45px;
+    text-align: center;
+    font-size: 10px;
+    color:white;
+    font-weight: bold;
+  background-color: rgba(0,0,0,.35);
+
+}
+
+.btn-circle-grp-top {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+
+}
+
+.btn-circle-grp {
+    position: fixed;
+    bottom: 110px;
+    right: 20px;
+
+}
+
+.btn-circle-grp-l {
+    position: fixed;
+    bottom: 110px;
+    left: 20px;
+
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navclass {
+width:100%; padding-top:0px; padding-left: 0px;padding-right: 0px; padding-bottom: 0px;
+}
+</style>
+</head>
+
+
+
+<script type="text/javascript">
+	//var scoreInputCode = 0 ;
+	
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode
+	    if (charCode > 31 && (charCode < 48 || charCode > 57))
+	        return false;
+	    return true;	    
+	}    
+
+ </script>
+
+<body>
+
+	<div id='loadingPage'>
+		<img class='centered' width=150px src='img/loading.gif' /><img class='centered' width=110px src='img/digisign-id-black.png' /><div class='centered' ><p id="loadingPrg" style="margin-top:80px; color: #ff0c0c; font-weight: bold;" align='center'>0%</p></div>
+	</div>
+	
+	<div class="modal fade" id="certEmpty" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Pernyataan</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+					</div>
+		            
+		            <form id="formSignNewCert">
+		            <div class="modal-body p-4" id="result">
+					#if($meterai > 0)
+							<div class="alert alert-info" role="alert">
+							<p align="center" style="font-size:90%;" id="alertRenewalInfo"><b>Dokumen ini dibubuhi Meterai Elektronik</b></p>
+							</div>
+					#end
+		            	<div class="form-group row">
+		            	
+		            		<input type="hidden" id="usernameNewCert" value="$username"></input>
+							<!-- <input type="hidden" id="pwd_user" value="$pwd_user"></input> -->
+						    <label for="inputUsername" class="col-sm-4 col-form-label">Email</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputUserNewCert" value="$email" disabled>
+						    </div>
+						    
+						   <label for="nohp" class="col-sm-4 col-form-label">No Handphone</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputHp" value="$nohp" disabled>
+						    </div>
+						    
+						    <label for="inputCodeNewCert" class="col-sm-4 col-form-label">Kode OTP
+						    
+						    <font color=green><div id="sukses_otpNew" style="font-size: 10px;"></div></font>
+							  <font color=red><div id="gagal_otpNew" style="font-size: 10px;"></div></font>
+						    
+						    </label>
+						    <div class="input-group col-sm-8">
+						      <input type="text" class="form-control" id="inputCodeNewCert" size="25" placeholder="Kode" maxlength="6" onkeypress="return isNumberKey(event)" required>
+						      <div class="input-group-append" style="display: block;">
+							  	<input class="btn btn-success" type="button" id="reqOtpNew" onClick="otpNewCert('$domainwv')" value="Kirim OTP"></input>
+							  </div>
+							  <div class="input-group col-sm-push-12">
+									<small id="note otp" class="form-text text-muted">*Tunggu 1 menit untuk kirim kode OTP lagi.</small>
+									<font color=red><div id="null_otp" style="font-size: 10px;"></div></font>
+								</div>
+							
+						    </div>
+						    
+							  
+						    <label for="inputPasswordNewCert" class="col-sm-4 col-form-label" >Password</label>
+						    <div class="col-sm-8">
+						      <input type="password" class="form-control" id="inputPasswordNewCert" placeholder="Password" maxlength="20" required>
+						      <small id="lupa" class="form-text text-muted"><a target="_blank" rel="noopener noreferrer" href="$link">Lupa Password ?</a></small>
+						    </div>
+						    
+					  	</div>
+					  	<hr>
+					  	
+			            <div class="alert alert-warning" role="alert">
+	              		<p id="infoNotif" align="justify" style="font-size:90%;">Anda belum memiliki sertifikat elektronik. Sertifikat elektronik akan dibuat sebelum tandatangan diproses</p>
+						</div>
+
+			            <hr>
+						<p>
+							<div class="checkbox">
+							  <label><input type="checkbox" id="agreeNewCert">
+							  	<font size="+0">
+							  		<b id="signNotif">Saya Menyetujui Penerbitan Sertifikat Elektronik dan Menyetujui Menandatangani Dokumen ini</b>
+								</font>
+							  </label>
+							</div>
+							<div class="checkbox">
+							  <label><input type="checkbox" id="agreeNewTermCondition">
+							  	<font size="+0">
+							  		<b>Saya Telah Membaca dan Menyetujui <a target="_blank" rel="noopener noreferrer" href="$KP">Kebijakan Privasi</a>, Beserta <a target="_blank" rel="noopener noreferrer" href="$KPSE" type="button">Perjanjian Kepemilikan Sertifikat Elektronik</a> Digisign yang Berlaku</b>
+								</font>
+							  </label>
+							</div>
+						</p>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="submit" class="btn btn-md btn-success" style="width: 120px;" name="newcert" id="newcert" disabled>
+							Proses
+						</button>
+		            </div>
+		            </form>
+		        </div>
+		    </div>
+		</div>
+	
+	
+		<div class="modal" id="modalActive" tabindex="-1" role="dialog" aria-hidden="true">
+		    <div class="modal-dialog modal-lg" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">Buat Password Tandatangan Digital Anda !</h5>
+		            </div>
+		            <form id="formactive">
+		            <div class="modal-body p-4" id="result">
+		            	<div class="form-group row">
+						    
+						    <input type="hidden" id="inputNewUsername" value="$newusername"></input>
+						    <input type="hidden" id="inputiduser" value="$iduser"></input> 
+						    <table width="90%">
+						    	<tr>
+						    		<td width="40%">
+						    			<label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
+						    		</td>
+						    		<td>
+						    			<input type="password" class="form-control" id="inputNewPassword" placeholder="Password" required>
+						      			<small id='messagepwd'></small>
+						    		</td>
+						    		<td width="5%"></td>
+						    	</tr>
+						    	<tr>
+						    		<td width="40%">
+						    			<label for="inputPassword2" class="col-sm-4 col-form-label">Ulang Password</label>
+						    		</td>
+						    		<td>
+						    			<input type="password" class="form-control" id="retypeNewPassword" placeholder="Ulang Password" required>
+						    		</td>
+						    		<td><span id='message'></span></td>
+						    	</tr>
+						    </table>
+						    
+					  	</div>
+					  	<hr>
+						<p>
+							<div class="checkbox">
+							  <label><input type="checkbox" id="agree" >
+							  	<font size="+0">
+							  		<!-- <b>Saya menyetujui <a target="_blank" rel="noopener noreferrer" href="$webdomain/terms.html">ketentuan layanan</a> tanda tangan elektronik <a target="_blank" rel="noopener noreferrer" href="$webdomain">(Digisign)</a></b>-->
+							  		<b>Saya telah membaca dan menyetujui <a target="_blank" rel="noopener noreferrer" href="$KP">Kebijakan Privasi</a> Digisign</b>
+								</font>
+							  </label>
+							</div>
+						</p>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="submit" class="btn btn-md btn-success" style="width: 120px;" name="simpanpwd" id="simpanpwd" disabled>
+							Simpan
+						</button>
+		            </div>
+		            </form>
+		        </div>
+		    </div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="alertModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlert">
+						<h5 class="modal-title" id="titleAlert">Lokasi Tandatangan</h5>
+
+					</div>
+					<div id="textAlert" class="modal-body"></div>
+					<div class="modal-footer" id="footerAlert">
+						<button type="button" class="btn btn-sm btn-default"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="alertModalSuccess" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlertS">
+							<h5 class="modal-title" id="titleAlertS"></h5>
+					</div>
+					<div id="textAlertS" class="modal-body"></div>
+					<div class="modal-footer" id="footerAlertS">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="alertModalSuccessRedirect" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlertR">
+						<h5 class="modal-title" id="titleAlertR"></h5>
+						
+					</div>
+					<div id="textAlertR" class="modal-body"></div>
+					<div class="modal-footer" id="footerAlertR">
+						<button type="button" class="btn btn-info" onclick="redirectFunction($link_red)">Tekan Disini Untuk Melanjutkan</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="gotoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      
+		      <div id="textAlert" class="modal-body">
+		                <label for="email" class="mr-sm-2">Go to page :</label><input type="number" id="gotopage"  class="form-control mb-2 mr-sm-2"/ >
+		      </div>
+		      <div class="modal-footer" id="footerAlert">
+		                <button type="button" id="goEnter" class="btn btn-primary mb-2 mr-sm-2" data-dismiss="modal">GO</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+  
+		
+		<div class="modal fade" id="Flag" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlert">
+						<h5 class="modal-title" id="titleAlert">Info</h5>
+
+					</div>
+					<div id="textAlert" class="modal-body">Dokumen Sudah ditandatangan</div>
+					<div class="modal-footer" id="footerAlert">
+						<button type="button" class="btn btn-sm btn-default"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	
+		<!-- Modal -->
+		<div class="modal fade" id="alertKonfirmasi" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Pernyataan</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+					</div>
+					
+					
+					<form id="formSign">
+					<div class="modal-body" style="overflow: hidden;">	
+					#if($meterai > 0)
+							<div class="alert alert-info" role="alert">
+							<p align="center" style="font-size:90%;" id="alertRenewalInfo"><b>Dokumen ini dibubuhi Meterai Elektronik</b></p>
+							</div>
+					#end
+						<div class="form-group row">
+							
+							<input type="hidden" id="username" value="$username"></input>
+							<!-- <input type="hidden" id="pwd_user" value="$pwd_user"></input> -->
+						    <label for="inputUsername" class="col-sm-4 col-form-label">Email</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputUser" value="$email" disabled>
+						    </div>
+						    
+						    <label for="nohp" class="col-sm-4 col-form-label">No Handphone</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputHp" value="$nohp" disabled>
+						    </div>
+						    
+						    <label for="inputCode" class="col-sm-4 col-form-label">Kode OTP
+						    
+						    <font color=green><div id="sukses_otp" style="font-size: 10px;"></div></font>
+							<font color=red><div id="gagal_otp" style="font-size: 10px;"></div></font>
+							
+						    
+						    </label>
+						    <div class="input-group col-sm-8">
+						      <input type="text" class="form-control" id="inputCode" placeholder="Kode" maxlength="6" onkeypress="return isNumberKey(event)"  >
+						      <div class="input-group-append" style="display: block;">
+							  	<input class="btn btn-success" type="button" id="reqOtp" onClick="otp('$domainwv')" value="Kirim OTP"></input>
+							  </div>
+							  
+							  <div class="input-group col-sm-push-12">
+									<small id="note otp" class="form-text text-muted">*Tunggu 1 menit untuk kirim kode OTP lagi.</small>
+									<font color=red><div id="null_otp" style="font-size: 10px;"></div></font>
+								</div>
+						    </div>
+						    
+						    
+						    <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
+						    <div class="col-sm-8">
+						      <input type="password" class="form-control" id="inputPassword" placeholder="Password" >
+						      <small id="lupa" class="form-text text-muted"><a target="_blank" rel="noopener noreferrer" href="$link">Lupa Password ?</a></small>
+						      <font color=red><div id="gagal_pass" style="font-size: 10px;"></div></font>
+						    </div> 
+						    
+					  	</div>
+						<hr>
+						<p>
+							#if($cert == "03")
+							<div id="alertRenewal" class="alert alert-warning" role="alert">
+							<p align="justify" style="font-size:90%;" id="alertRenewalInfo">Masa aktif sertifikat elektronik anda akan segera habis. Silahkan konfirmasi untuk memperpanjang sertifikat elektronik anda dengan klik centang dibawah ini</p>
+							</div>
+								<div class="checkbox" id="checkrenewal">
+								  <label><input type="checkbox" id="renewal">
+								  	<font size="+0"><b id="alertRenewalInfoBox">Saya menyetujui untuk memperpanjang sertifikat elektronik</b></font>
+								  </label>
+								</div>
+							#end
+							#if($cert == "04")
+							<div id="alertRenewal" class="alert alert-warning" role="alert">
+							<p align="justify" style="font-size:90%;" id="alertRenewalInfo">Diinformasikan ke pengguna Sertifikat Elektronik Digisign, bahwa pada tanggal $mass_revoke, Digisign akan melakukan Pencabutan Sertifikat Elektronik lama dan selanjutnya akan membutuhkan persetujuan untuk Penerbitan Sertifikat Elektronik baru Anda. Tidak ada dampak terhadap semua Sertifikat maupun tanda tangan yang telah dilakukan. Seluruh dokumen yang sudah ditandatangani akan tetap valid. Silahkan konfirmasi jika Anda setuju untuk melakukan proses pencabutan Sertifikat lama dan penerbitan Sertifikat baru sekarang</p>
+							</div>
+								<div class="checkbox" id="checkrenewal">
+								  <label><input type="checkbox" id="renewal">
+								  	<font size="+0"><b id="alertRenewalInfoBox">Saya menyetujui untuk dilakukan Pencabutan Sertifikat Elektronik lama dan menyetujui Penerbitan Sertifikat Elektronik baru</b></font>
+								  </label>
+								</div>
+							#end		
+							<div class="checkbox" id="checkme3">
+							  <label><input type="checkbox" id="checkme">
+							  #if($meterai>0)
+							  <font size="+0"><b>Saya menyetujui menandatangani
+								dokumen yang dibubuhi Meterai Elektronik</b></font>
+							  #else
+							  	<font size="+0"><b>Saya menyetujui menandatangani
+								dokumen ini</b></font>
+							  #end
+							  </label>
+							</div>
+							<div class="checkbox" id="checkme2" style="display:none;" >
+							  <label><input type="checkbox" id="checkme1">
+							  	<font size="+0"><b>Saya menyetujui dokumen ini</b></font>
+							  </label>
+							</div>
+							<div class="checkbox" style="display:none;" id="checkapprovalreject1">
+							  <label><input type="checkbox" id="checkapprovalreject">
+							  	<font size="+0"><b>Saya tidak menyetujui dokumen ini</b></font>
+							  </label>
+							</div>
+							<div class="modal-body" style="max-height: 308.7px; ">
+							  <textarea id="alasanpenolakan" name="alasan" rows="5" cols="45" style="position: initial;width: 100%; display: none;" placeholder="Mohon sampaikan alasan penolakan disini..." ></textarea>
+							  </label>
+							</div>
+							<!-- 
+							<font size="+1"><b>Saya menyetujui menandatangani
+								dokumen ini</b></font>
+							 -->
+						</p>
+					</div>
+					<div class="modal-footer">
+						<!--
+						<button type="button" class="btn btn-md btn-danger"
+							data-dismiss="modal" style="width: 120px;">Tidak</button>
+						 
+						<button id="saveLocation" type="button"
+							class="btn btn-md btn-success" data-dismiss="modal"
+							style="width: 120px;">Setuju</button>
+						 -->
+						<button type="button" class="btn btn-md btn-success" style="width: 120px;" name="setuju" id="setuju" disabled>
+							Setuju
+						</button>
+						<button type="button" class="btn btn-md btn-danger" style="width: 120px; display:none;" name="tolak" id="tolak" disabled>
+							Tolak
+						</button>	
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+		
+
+		<input id="upload-button" type="hidden" /> <input type="file"
+			id="file-to-upload" accept="application/pdf" />
+		<div id="widget">
+			<!--img id="img1" src='174855.png'/-->
+		</div>
+
+		<nav id="navtop" class="navbar  fixed-top navbar-light bg-light device-fixed-width" >
+			  <a class="navbar-brand" href="#">$file_name</a>
+			  <div id="page-count-container">
+			        
+			
+			  </div>
+		</nav>
+		<div id='main-body'>
+		<div id="pdf-main-container">
+	
+
+		<div id="page-loader" >Loading page ...</div>
+       
+		    <canvas id="pdf-canvas" ></canvas>
+
+
+		</div>
+		 </div>
+		 		<div id="sgn-widget" >
+
+		</div>
+		<div id="widget1" style="position :absolute; display:none;" >
+  		</div>
+		 
+		<div class="btn-circle-grp-l">
+  			<button id="tosignpage" class="btn-circle3" onClick="toSgn();">Sign Page</button>
+
+		</div>
+		<div class="btn-circle-grp-top">
+		
+		  	  <button id="goButton" class="btn-circle2"><span id="pageText"></span>/<span id="pdf-total-pages"></span></button>
+		</div>
+		
+		<div class="btn-circle-grp">
+		
+			  <button class="btn-circle" onclick="zoomout()" >-</button>
+			  <button class="btn-circle" onclick="zoomin()" >+</button>
+			  <button class="btn-circle" id="pdf-prev" > < </button>
+			  <button class="btn-circle" id="pdf-next"> > </button>
+		</div>
+		
+		 
+		<nav id="navbottom" class="navbar fixed-bottom navbar-light bg-light" style="width:100%; padding-top:0px; padding-left: 0px;padding-right: 0px; padding-bottom: 0px;">
+		
+		<button id="prosesSign" class="btn btn-success block">Proses</button>
+  		<div class="block1 button-next"> <b>powered by : </b><img width=110px src='img/digisign-black.png' /></div>
+		</nav>
+		<!-- PDF////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+		<!-- <div id="sgn-widget"></div>-->
+
+		<!-- div id='sgn-user'  class='sign-box' style='position :absolute;display:none; vertical-align: middle;'>
+		<a id="sgnClick" href="#" onClick='signProcess();'>Sign Here</a>
+		<img  id="sgnImg" src="data:image/png;base64,${sgn_img}" style="width:auto;height:auto;display:none;max-height:100%;" />
+		</div-->
+
+	<script>
+		
+		$("#pdf-loader").show();
+		$("#pdf-canvas").hide();
+		$('#sgn-user').hide();
+		$("#agreeNewTermCondition").prop("disabled", true);
+	    $("#agreeNewCert").prop("disabled", true);
+
+		var zm= 1;
+		var __PDF_DOC,
+			__CURRENT_PAGE,
+			__TOTAL_PAGES,
+			__PAGE_RENDERING_IN_PROGRESS = 0,
+			__CANVAS = $('#pdf-canvas').get(0),
+			__CANVAS_CTX = __CANVAS.getContext('2d');
+		var pdfwidth = 0;
+		var pdfheight = 0;
+		var ori_width;
+		var ori_height;
+		var pdfLoc;
+		
+		//var __PDF_DOC,
+			//__CURRENT_PAGE,
+			//__TOTAL_PAGES,
+			//__PAGE_RENDERING_IN_PROGRESS = 0,
+			//__CANVAS = $('#pdf-canvas').get(0),
+			//__CANVAS_CTX = __CANVAS.getContext('2d');
+		
+		var dataUser = $locSign;
+		var jsonText = dataUser.user;
+		//var jsonText=dataUser.data;
+		
+		if ("$cert" != "05" && "$cert" != "G1")
+		{
+			usersign.usersign = $("#inputUser").val();
+		}
+		else
+		{
+			usersign.usersign = $("#inputUserNewCert").val();
+		}
+		
+		var last=0;
+		
+		function setData(){
+			var html="";
+			var html2="";
+			for (x in jsonText) {
+				if(jsonText[x].status=="0")html+="<div class='child'> <a onclick='return setLoc(\"sgn-user-"+x+"\");' class='btn btn-xs btn-block'  style='color:black;white-space:normal;background-color:"+jsonText[x].color+";'>"+jsonText[x].user+"</a></div>";
+				if(jsonText[x].status=="1")html2+="<div class='child'> <a onclick='return setLoc(\"sgn-user-"+x+"\");' class='btn btn-xs btn-block'  style='color:black;white-space:normal;background-color:"+jsonText[x].color+";'>"+jsonText[x].user+"</a></div>";
+			} 
+			document.getElementById("lsign").innerHTML= html2;
+			document.getElementById("lwait").innerHTML= html;
+			if(html2=="")$("#label-lsign").hide();
+			else $("#label-lsign").show();
+		}
+		function trace(){
+			console.log(jsonText);
+		}
+		
+		
+		function showPDF(path) {
+			$("#pdf-loader").show();
+			//PDFJS.getDocument({ url: path }).then(function(pdf_doc) {
+			PDFJS.getDocument({ url: path }, false, null, function(progress) {
+				var total = 0;
+				if(progress.total == undefined){
+					total = progress.loaded + progress.loaded;
+				}
+				else {
+					total = progress.total;
+				}
+				var percent_loaded = Math.floor((progress.loaded / total) * 100);//progress.total undefined
+				console.log(progress.total + ' # ' + progress.loaded + ' * ' + total +' $ ' + percent_loaded);
+				percent_loaded = percent_loaded > 100? 100: parseInt(percent_loaded); 
+				$("#loadingPrg").html(percent_loaded+"%");
+				
+			}).then(function(pdf_doc) {
+				__PDF_DOC = pdf_doc;
+				__TOTAL_PAGES = __PDF_DOC.numPages;
+				
+				// Hide the pdf loader and show pdf container in HTML
+				$("#pdf-loader").hide();
+				$("#pdf-contents").show();
+				$("#pdf-total-pages").text(__TOTAL_PAGES);
+
+				// Show the first page
+				showPage(1);
+				//Android.setPage(__TOTAL_PAGES);
+				
+
+			}).catch(function(error) {
+				// If error re-show the upload button
+				$("#pdf-loader").hide();
+				$("#upload-button").show();
+				
+				alert(error.message);
+			});;
+		}
+		
+		function initData(){
+			var html="";
+			for (x in jsonText) {
+				//jsonText[x].sgn="0";
+				if(jsonText[x].type=="sign"){
+					html+="<div id='sgn-user-"+x+"' class='sign-box' style='postion :static; vertical-align: middle; opacity: 0.7;' ><a align='center' id='sgnClick-"+x+"' href='javascript:void(0)' onClick='signProcess("+x+");' style='text-align:center;'> <img src='data:image/png;base64,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' height='37%' width='37%'/> </a>		<img  id='sgnImg-"+x+"' src='data:image/png;base64,${sgn_img}' style='width:auto;height:auto;display:none;max-height:100%;' /></div>";
+				}
+				else {
+					html+="<div id='sgn-user-"+x+"' class='sign-box' style='postion :static; vertical-align: middle; opacity: 0.7;' ><a align='center' id='sgnClick-"+x+"' href='javascript:void(0)' onClick='signProcess("+x+");' style='text-align:center;'><img src='data:image/png;base64,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' height='37%' width='37%'/> </a>		<img  id='sgnImg-"+x+"' src='data:image/png;base64,${sgn_img}' style='width:auto;height:auto;display:none;max-height:100%;' /></div>";
+				}
+			} 
+			document.getElementById("sgn-widget").innerHTML= html;
+
+			//trace();
+			//setData();
+
+		}
+		
+		function setLocation(){
+		
+			for (x in jsonText) {
+				
+				var position = $('#pdf-canvas').position();
+				var canvasElem = document.querySelector('canvas');
+				var scale_sign_w=$('#pdf-canvas').width()/ori_width;
+				var scale_sign_h=$('#pdf-canvas').height()/ori_height;
+				
+				//var cw=(130*scale_sign_w)/2;
+				////var ch=(65*scale_sign_h)/2;
+				////var sz_font=(32*scale_sign_w/2);
+				
+				////$('#sgn-user-'+x).css('width',(130*scale_sign_w)+'px');
+				////$('#sgn-user-'+x).css('height',(65*scale_sign_h)+'px');
+				
+				$('#sgn-user-'+x).css('width',((jsonText[x].rx-jsonText[x].lx)*scale_sign_w)+'px');
+				$('#sgn-user-'+x).css('height',((jsonText[x].ry-jsonText[x].ly)*scale_sign_h)+'px');
+				
+				var topSgn=ori_height-jsonText[x].ry;
+				document.getElementById('sgn-user-'+x).style.top=(position.top+(topSgn*scale_sign_h))+'px';
+				document.getElementById('sgn-user-'+x).style.left=(position.left+(jsonText[x].lx*scale_sign_w))+'px';
+				document.getElementById('sgn-user-'+x).style.position='absolute';
+				if(__CURRENT_PAGE==jsonText[x].page){
+					$('#sgn-user-'+x).show();
+				}else{
+					$('#sgn-user-'+x).hide();
+					
+				}
+			}
+		}
+		initData();
+		$("#pdf-loader").show();
+		$("#pdf-canvas").hide();
+		var init_x=1;
+		
+
+		
+		
+		
+		var options = options || { scale: 1 };
+		var ori_width;
+		var ori_height;
+		var scale_sign_w;
+		var scale_sign_h;
+		
+		function showPage(page_no) {
+			var diffPage=false;
+			if(init_x==0 && __CURRENT_PAGE!=page_no){
+			    diffPage=true;
+			}
+			__PAGE_RENDERING_IN_PROGRESS = 1;
+			__CURRENT_PAGE = page_no;
+		
+			// Disable Prev & Next buttons while page is being loaded
+			$("#pdf-next, #pdf-prev").attr('disabled', 'disabled');
+		
+			// While page is being rendered hide the canvas and show a loading message
+			$("#pdf-canvas").hide();
+			$("#page-loader").show();
+		
+			
+			// Update current page in HTML
+			$("#pageText").text(page_no);
+			
+			// Fetch the page
+			__PDF_DOC.getPage(page_no).then(function(page) {
+
+				ori_width= page.getViewport(1).width;
+				ori_height= page.getViewport(1).height;
+				// As the canvas is of a fixed width we need to set the scale of the viewport accordingly
+				
+		   
+		    var viewport;
+			        //var viewport = page.getViewport(options.scale);
+				// Get viewport of the page at required scale
+				
+		  
+		   
+		   viewport = page.getViewport(4);
+		   __CANVAS.height = viewport.height;
+		   __CANVAS.width = viewport.width; 
+		   if(init_x==1 || diffPage==true){
+
+		        zm="100%";
+		        init_x=0;
+		    }
+		   __CANVAS.style.width =zm;
+		   //console.log(zm);
+		   
+				
+		    
+
+
+				
+				// __CANVAS.height = window.innerHeight;
+				 //__CANVAS.width = window.innerWidth;
+
+
+				var renderContext = {
+					canvasContext: __CANVAS_CTX,
+					viewport: viewport
+				};
+				
+				// Render the page contents in the canvas
+				page.render(renderContext).then(function() {
+					__PAGE_RENDERING_IN_PROGRESS = 0;
+
+					// Re-enable Prev & Next buttons
+					$("#pdf-next, #pdf-prev").removeAttr('disabled');
+
+					// Show the canvas and hide the page loader
+					$("#pdf-canvas").show();
+					$("#page-loader").hide();
+
+					$("#main-body").show();
+					$("#loadingPage").hide();
+					pdfheight=$("#pdf-canvas").height();
+					pdfwidth=$("#pdf-canvas").width();
+					rect = document.getElementById("pdf-canvas").getBoundingClientRect();
+
+		   
+		   
+		      setLocation();
+				});
+
+			});
+			
+			
+		}
+		
+		// Upon click this should should trigger click on the #file-to-upload file input element
+		// This is better than showing the not-good-looking file input element
+		$("#upload-button").on('click', function() {
+			$("#file-to-upload").trigger('click');
+		});
+		
+		// When user chooses a PDF file
+		$("#file-to-upload").on('change', function() {
+			// Validate whether PDF
+		    if(['application/pdf'].indexOf($("#file-to-upload").get(0).files[0].type) == -1) {
+		        alert('Error : Not a PDF');
+		        return;
+		    }
+		
+			$("#upload-button").hide();
+		
+			// Send the object url of the pdf
+			
+		});
+		
+		// Previous page of the PDF
+		$("#pdf-prev").on('click', function() {
+			prev();
+		});
+		
+		// Next page of the PDF
+		$("#pdf-next").on('click', function() {
+			next();
+		});
+		
+		document.getElementById("agree").disabled = true;
+		$('#inputNewPassword, #retypeNewPassword').on('keyup', function () {
+			var lowerCaseLetters = /[a-z]/g;
+			var upperCaseLetters = /[A-Z]/g;
+			var numbers = /[0-9]/g;
+			var scoreWeak = 0;
+			var scoreMatch = 0;
+			
+			
+			if($('#inputNewPassword').val().length<6){
+				$('#messagepwd').html('Minimal 6 karakter').css('color', 'red');
+				scoreWeak = 0;
+			} else {
+				
+				if($('#inputNewPassword').val().match(lowerCaseLetters) && $('#inputNewPassword').val().match(upperCaseLetters) && $('#inputNewPassword').val().match(numbers)) {
+					$('#messagepwd').html('Kuat').css('color', 'green');	
+					scoreWeak = 1;
+				}
+				else if($('#inputNewPassword').val().match(lowerCaseLetters) && $('#inputNewPassword').val().match(upperCaseLetters)){
+					$('#messagepwd').html('Sedang. Gunakan kombinasi angka dan huruf besar kecil').css('color', 'green');
+					scoreWeak = 1;
+				}
+				else if($('#inputNewPassword').val().match(lowerCaseLetters) && $('#inputNewPassword').val().match(numbers)){
+					$('#messagepwd').html('Sedang. Gunakan kombinasi angka dan huruf besar kecil').css('color', 'green');
+					scoreWeak = 1;
+				}
+				else {
+					$('#messagepwd').html('Lemah. Gunakan kombinasi angka dan huruf besar kecil').css('color', 'red');
+					scoreWeak = 0;
+				}
+				
+				//$('#messagepwd').html('').css('color', 'green');
+			}
+			
+			  if ($('#inputNewPassword').val() == $('#retypeNewPassword').val() && $('#inputNewPassword').val().length>5) {
+			    $('#message').html('<img src="$domainwv/img/centang.png" height="24" width="20"/>').css('color', 'green');
+			    scoreMatch = 1;
+			  } else 
+				  {
+			    	$('#message').html('<img src="$domainwv/img/close.png" height="24" width="20"/>').css('color', 'red');
+			    	scoreMatch = 0;
+				  }
+			  
+			  	if(scoreWeak == 1 && scoreMatch == 1)
+		  		{
+		  			document.getElementById('agree').disabled = false;
+		  		}
+		  		else
+		  		{
+		  			document.getElementById('agree').disabled = true;
+		  		}
+			});
+		
+		function next(){
+			if(__CURRENT_PAGE != __TOTAL_PAGES)
+				showPage(++__CURRENT_PAGE);
+		}
+		
+		function prev(){
+			if(__CURRENT_PAGE != 1)
+				showPage(--__CURRENT_PAGE);
+		}
+		
+		//function save(){
+		//		DS.ResultSignDoc(1);
+		//}
+		
+		
+		function goPage(pageTo){
+			if(pageTo > 0 && pageTo <= __TOTAL_PAGES)
+				showPage(pageTo);
+			else alert("Error!");
+			
+		}
+		
+	
+		function setPage(){
+			var pageTo=parseInt($("#pageText").text());
+			if(pageTo > 0 && pageTo <= __TOTAL_PAGES)
+				showPage(pageTo);
+			else{
+				 $("#pageText").text(__CURRENT_PAGE);
+				 alert("Error!");
+			}
+		}
+
+		
+		function toSgn(){
+			goPage(jsonText[last].page);
+			if(last+1>=jsonText.length){
+				last=0;
+			}else{
+				last++;
+			}
+		}
+
+		function alertDanger(text, ret){
+			$("#headerAlert").removeClass('modal-header-success').addClass('modal-header-danger');
+			$("#textAlert").text(text);
+			$("#titleAlert").text("Gagal");
+			$("#footerAlert").show();
+			$('#alertModal').modal({
+			  keyboard: true,
+			  backdrop:true
+			});
+			$("#alertModal").modal('show');
+		}
+		
+		
+		function alertSucess(text){
+			$("#headerAlertS").removeClass('modal-header-danger').addClass('modal-header-success');
+			$("#textAlertS").text(text);
+			$("#titleAlertS").text("Sukses");
+			$("#footerAlertS").show();
+			$('#alertModalSuccess').modal({
+			  keyboard: false,
+			  backdrop:false
+			});
+			$("#alertModalSuccess").modal('show');
+		
+		
+		}
+		function alertSucessredirect(text,link){
+			$("#headerAlertR").removeClass('modal-header-danger').addClass('modal-header-success');
+			$("#textAlertR").text(text);
+			$("#titleAlertR").text("Sukses");
+			$("#footerAlertR").show();
+			$("#linkredirect").text(link);
+			$link_red=link;
+			$('#alertModalSuccessRedirect').modal({
+			  keyboard: false,
+			  backdrop:false
+			});
+			$("#alertModalSuccessRedirect").modal('show');
+			
+		
+		}
+		
+		function redirectFunction(link) {
+			  location.replace(link)
+		}
+		
+		function cekComplete(){
+			for (x in jsonText) {
+				if(jsonText[x].status=="0"){
+					return false;
+				}
+			}
+			if(sign==1)return true;
+			return false;
+		}
+
+		function loading(){
+			$("#headerAlert").removeClass('modal-header-success').removeClass('modal-header-danger');
+			$("#titleAlert").text("Data Sedang Diproses");
+			$("#footerAlert").hide();
+			$("#textAlert").html("<div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%\"></div></div>");
+			$('#alertModal').modal({
+			  keyboard: false,
+			  backdrop:'static'
+			});
+			$("#alertModal").modal('show');
+			var element = document.getElementById("navbottom");
+			element.classList.add("navclass");
+		}
+		
+		function signProcess(x){
+			$('#sgn-user-'+x).removeClass('sign-box').addClass('sign-box2');
+			$('#sgnClick-'+x).hide();
+			$('#sgnImg-'+x).show();
+			jsonText[x].sgn="1";
+			jmlttd++;
+			dataUser.user=jsonText;
+			sign=1;
+		}
+		
+		function active(status){
+			if(status=='1') {
+				$('#modalActive').show();
+			}
+			else {
+				$('#modalActive').hide();
+			}
+			
+		}
+		
+		function certStatus(cert){
+			if(cert == '06' || cert == '07') {
+				$('#modalExpired').show();
+			}
+			else {
+				$('#modalExpired').hide();
+			}
+			
+		}
+		
+		
+
+		$("#download-image").on('click', function() {
+		    var canvas = document.getElementById('pdf-canvas');
+		    var image = document.getElementById('img1');
+		    var ctx = canvas.getContext('2d');
+		    var dm = document.getElementsByClassName('dragme');
+			alert("canvas "+canvas.offsetLeft);
+			alert("canvas "+canvas.offsetTop);
+		    alert("left"+lefts);
+		    alert("top"+tops);
+		    
+		    image.height = heights;
+		    image.width = widths;
+		    alert("widths ="+widths+" heights ="+heights);
+		    alert("image width ="+image.width+" image height ="+image.height);
+		    
+			ctx.drawImage( image , lefts-canvas.offsetLeft , tops-canvas.offsetTop, image.width, image.height);
+		   
+			$(this).attr('href', __CANVAS.toDataURL("image/jpeg", 1)).attr('download', 'page.jpg');
+		});
+		function setModalMaxHeight(element) {
+			  this.$element     = $(element);  
+			  this.$content     = this.$element.find('.modal-content');
+			  var borderWidth   = this.$content.outerHeight() - this.$content.innerHeight();
+			  var dialogMargin  = $(window).width() < 768 ? 20 : 60;
+			  var contentHeight = $(window).height() - (dialogMargin + borderWidth);
+			  var headerHeight  = this.$element.find('.modal-header').outerHeight() || 0;
+			  var footerHeight  = this.$element.find('.modal-footer').outerHeight() || 0;
+			  var maxHeight     = contentHeight - (headerHeight + footerHeight);
+
+			  this.$content.css({
+			      'overflow': 'hidden'
+			  });
+
+			  this.$element
+			    .find('.modal-body').css({
+			      'max-height': maxHeight,
+			      'overflow-y': 'auto'
+			  });
+		}
+		
+		$('.modal').on('show.bs.modal', function() {
+			  $(this).show();
+			  setModalMaxHeight(this);
+		});
+
+		$('.modal').on('hidden.bs.modal', function() {
+			  	$("#widget1").hide();
+
+		});
+
+		
+		
+		function zoomin() {
+		    if(zo < zomx){
+		        if(zo==0||zo==1){
+		            zm2();
+		            zo=2;
+		        }else if(zo==2){
+		            zm3();
+		            zo=3;
+		        }else if(zo==3){
+		            zm4();
+		            zo=4;
+		        }
+		    }
+		}
+		
+		function zoomout() {
+		    if(zo > zimx){
+		        if(zo==4){
+		            zm3();
+		            zo=3;
+		        }else if(zo==3){
+		            zm2();
+		            zo=2;
+		        }else {
+		            zm1();
+		            zo=1;
+		        }
+		        
+		        
+		    }
+		    
+		}
+
+		function zm1(){
+		    
+		    
+		    zm = '100%';
+		    showPage(__CURRENT_PAGE);
+		    zo=1;
+
+		}
+
+		function zm2(){
+		
+		    zm = '150%';
+		    showPage(__CURRENT_PAGE);
+		    zo=2;
+
+		}
+		function zm3(){
+		  
+		    zm = '200%';
+		    showPage(__CURRENT_PAGE);
+		    zo=3;
+
+		}
+		function zm4(){
+		   
+		    zm = '250%';
+		    showPage(__CURRENT_PAGE);
+		    zo=4;
+
+		}
+		
+		$(function(){
+			// var statusnewCert = false;
+			// var statusNewTermCondition = false;
+			var statusinputPasswordNewCert = false;
+			var statusinputCodeNewCert = false;
+
+            $('#inputCodeNewCert').keyup(function() {
+                if($('#inputCodeNewCert').val().length > 5 && $('#inputPasswordNewCert').val().length > 4)
+                {
+                    statusinputCodeNewCert = true;
+                    statusinputPasswordNewCert = true;
+                    if(statusinputCodeNewCert && statusinputPasswordNewCert)
+					{
+					    if($('#agreeNewCert').is(':checked'))
+						{
+                            $("#agreeNewCert").removeAttr('disabled');
+                            $("#agreeNewTermCondition").removeAttr('disabled');
+                            if($('#agreeNewTermCondition').is(':checked'))
+                            {
+                                $("#newcert").removeAttr('disabled');
+                            }
+                        }
+                        else if($('#agreeNewTermCondition').is(':checked') && $('#agreeNewCert').is(':checked'))
+                        {
+
+                            $("#agreeNewCert").removeAttr('disabled');
+                            $("#agreeNewTermCondition").removeAttr('disabled');
+                            $("#newcert").removeAttr('disabled');
+                        }
+					    else
+						{
+                            $("#agreeNewCert").removeAttr('disabled');
+						}
+					}
+                    else
+					{
+                        $("#agreeNewCert").prop("disabled", true);
+                        $("#agreeNewTermCondition").prop("disabled", true);
+                        $("#newcert").prop("disabled", true);
+					}
+                }
+                else
+				{
+                    if(statusinputCodeNewCert && statusinputPasswordNewCert)
+                    {
+                        $("#agreeNewCert").prop("disabled", true);
+                        $("#agreeNewTermCondition").prop("disabled", true);
+                        $("#newcert").prop("disabled", true);
+                    }
+				}
+            });
+
+            $('#inputPasswordNewCert').keyup(function() {
+                if($('#inputPasswordNewCert').val().length > 4 && $('#inputCodeNewCert').val().length > 5)
+				{
+                    statusinputCodeNewCert = true;
+                    statusinputPasswordNewCert = true;
+                    if(statusinputCodeNewCert && statusinputPasswordNewCert)
+                    {
+                        if($('#agreeNewCert').is(':checked'))
+                        {
+                            $("#agreeNewCert").removeAttr('disabled');
+                            $("#agreeNewTermCondition").removeAttr('disabled');
+                            if($('#agreeNewTermCondition').is(':checked'))
+							{
+                                $("#newcert").removeAttr('disabled');
+							}
+                        }
+                        else if($('#agreeNewTermCondition').is(':checked') && $('#agreeNewCert').is(':checked'))
+                        {
+                            $("#agreeNewCert").removeAttr('disabled');
+                            $("#agreeNewTermCondition").removeAttr('disabled');
+                            $("#newcert").removeAttr('disabled');
+                        }
+                        else
+                        {
+                            $("#agreeNewCert").removeAttr('disabled');
+                        }
+                    }
+                    else
+                    {
+                        $("#agreeNewCert").prop("disabled", true);
+                        $("#agreeNewTermCondition").prop("disabled", true);
+                        $("#newcert").prop("disabled", true);
+                    }
+				}
+                else
+				{
+                    if(statusinputCodeNewCert && statusinputPasswordNewCert)
+                    {
+                        $("#agreeNewCert").prop("disabled", true);
+                        $("#agreeNewTermCondition").prop("disabled", true);
+                        $("#newcert").prop("disabled", true);
+                    }
+				}
+            });
+			
+		    $('#agreeNewCert').click(function() {
+		        if($('#agreeNewCert').is(':checked'))
+		        	{
+		        	    // $("#newcert").removeAttr('disabled');
+                        $("#agreeNewTermCondition").removeAttr('disabled');
+		            }
+		        else
+		        	{
+                        $("#newcert").prop("disabled", true);
+                        $('#agreeNewTermCondition').prop('checked', false);
+                        $("#agreeNewTermCondition").prop("disabled", true);
+		        	}
+		    });
+
+            $('#agreeNewTermCondition').click(function() {
+                if($('#agreeNewTermCondition').is(':checked'))
+                {
+                    $("#newcert").removeAttr('disabled');
+                }
+                else
+                {
+                    $("#newcert").prop("disabled", true);
+                }
+            });
+		});
+
+		
+		//untuk tombol setuju
+		var checkme=document.getElementById('checkme');
+		var setujubtn = document.getElementById('setuju');
+		if (checkme)
+		{
+			checkme.onchange = function() {
+			 	setujubtn.disabled = !this.checked;
+			 	$("#checkapprovalreject").prop("checked", false);
+			 	document.getElementById("alasanpenolakan").style.display = "none";
+			};
+		}
+		var checkme1=document.getElementById('checkme1');
+		var checkapproval=document.getElementById('checkapprovalreject');
+		var tolakbtn = document.getElementById('tolak');
+		
+		if(checkme1)
+		{
+			checkme1.onchange = function() {
+			 	setujubtn.disabled = !this.checked;
+			 	$("#checkapprovalreject").prop("checked", false);
+			 	document.getElementById("alasanpenolakan").style.display = "none";
+			 	document.getElementById("tolak").style.display = "none";
+			 	document.getElementById("setuju").style.display = "block";
+			};
+		}
+		
+		if(checkapproval)
+		{
+			checkapproval.onchange = function() {
+				tolakbtn.disabled = !this.checked;
+				document.getElementById("alasanpenolakan").style.display = "block";
+				$("#checkme1").prop("checked", false);
+			 	document.getElementById("setuju").style.display = "none";
+			 	document.getElementById("tolak").style.display = "block";
+			};
+		}
+		
+		//untuk tombol simpan pwd
+		var simpanpwd=document.getElementById('agree');
+		var simpanpwdbtn = document.getElementById('simpanpwd');
+		simpanpwd.onchange = function() {
+			simpanpwdbtn.disabled = !this.checked;
+		};
+		
+		//http://localhost:8086/doc/listdoc.html?frmProcess=getFile&path=../UploadFile/86/original/&name=DS20171004121746.pdf&filename=Surat%20ijin.pdf
+		//var urlParams = new URLSearchParams(window.location.search);
+		//var path = urlParams.toString();
+		
+		active(statususer);
+		certStatus('$cert');
+		showPDF('$pdf_link');
+		
+		if(isSign == true)
+		{
+			$("#Flag").modal('show');
+			$("#cancelLocation").hide();
+			$("#prosesSign").hide();
+			$("#location").hide();
+			
+		}
+		else
+		{
+			$("#Flag").modal('hide');
+			$("#prosesApproval").hide();
+			//$("#mainNav").show();
+			//$("#secondNav").show();
+		}
+		if(isApproval == true)
+		{
+			document.getElementById("checkapprovalreject1").style.display = "block";
+			document.getElementById("checkme2").style.display = "block";
+			document.getElementById("checkme3").style.display = "none";
+			$("#cancelLocation").hide();
+			$("#location").hide();
+			$("#tosignpage").hide();
+			
+		}
+		
+		if($by_pass_click)
+		{
+			for (x in jsonText) {
+				signProcess(x);
+			} 
+			$("#sgnClick-").click();
+			$("#sgnClick-").trigger("click");
+
+			sign = 1;
+		}
+		
+		
+		
+		</script>
+	</div>
+	<!-- main-body -->
+</body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Rekening" table="rekening">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">rekening_sq</param>
+			</generator>
+		</id>
+		<property name="kode_bank" type="string"></property>
+		<property name="no_rekening" type="string"></property>
+		<many-to-one name="userdata" class="id.co.keriss.consolidate.ee.Userdata"></many-to-one>
+		<property name="image_buku_tabungan" type="string"></property>
+		
+	</class>
+</hibernate-mapping>

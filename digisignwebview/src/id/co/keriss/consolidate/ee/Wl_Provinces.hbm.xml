@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Wl_Provinces"
+		table="wl_provinces">
+		<id name="id" column="id"></id>
+		<property name="name" type="string" length="100"></property>
+	</class>
+</hibernate-mapping>

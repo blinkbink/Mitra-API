@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="id.co.keriss.consolidate.ee.Alamat" table="Alamat">
+   <id name="id" column="id" type="java.lang.Long">
+     <generator class="sequence">
+      <param name="sequence">alamat_sq</param>
+     </generator>
+    </id>
+    <property name="alamat" type="string"></property>
+    <property name="kelurahan" type="string"></property>
+    <property name="kecamatan" type="string"></property>
+    <property name="kota" type="string"></property>
+    <property name="propinsi" type="string"></property>
+    <property name="kodepos" type="string"></property>
+    <property name="status" type="char"></property>
+	<many-to-one name="userdata" column="userdata" class="id.co.keriss.consolidate.ee.Userdata" not-null="false"></many-to-one>
+    
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.Documents"
+		table="Documents">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">document_sq</param>
+			</generator>
+		</id>
+
+		<property name="file" type="string"></property>
+		<property name="file_name" type="string"></property>
+		<property name="path" type="string"></property>
+		<property name="rename" type="string"></property>
+		<property name="signdoc" type="string"></property>
+		<property name="status" type="char"></property>
+		<property name="sign" type="boolean"></property>
+		<property name="waktu_buat" type="java.util.Date"></property>
+		<property name="idMitra" column="id_doc_mitra" type="string"></property>
+		<property name="redirect" type="boolean"></property>
+		<property name="delete" type="boolean"></property>
+		<property name="sequence" type="boolean"></property>
+		<property name="current_seq" type="integer"></property>
+		<property name="proses" type="boolean"></property>
+		<property name="last_proses" type="java.util.Date"></property>
+		<!--many-to-one name="userdata" class="id.co.keriss.consolidate.ee.Userdata" 
+			not-null="false"></many-to-one -->
+		<many-to-one name="eeuser" class="org.jpos.ee.User"
+			not-null="false"></many-to-one>
+		<property name="payment" type="char" />
+		<set name="docAccess">
+			<key column="document"></key>
+			<one-to-many
+				class="id.co.keriss.consolidate.ee.DocumentAccess"></one-to-many>
+		</set>
+		<property name="type_document" type="string"></property>
+
+	</class>
+</hibernate-mapping>

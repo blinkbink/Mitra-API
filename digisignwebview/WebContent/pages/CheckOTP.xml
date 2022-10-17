@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<page>
+    <property name="title">Aktivasi Mitra</property>
+    <page-action name="id.co.keriss.consolidate.action.km.CheckOTP" />
+</page>
+

@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--  <meta name="viewport" content="width=content-width, initial-scale=1, maximum-scale=1.2, user-scalable=yes" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1,maximum-scale=1">
+
+<script src="$domainwv/js/pdf.min.js"></script>
+<link rel="icon" href="$domainwv/img/favicon.ico">
+<script
+	src="$domainwv/js/popper.min.js"
+
+	crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="$domainwv/js/jquery-ui.min.css">
+<script type="text/javascript" src="$domainwv/js/cdnjquery.min.js"></script>
+<script type="text/javascript" src="$domainwv/js/cdnjquery-ui.min.js"></script> 
+	
+<script type="text/javascript" src="$domainwv/js/cdnbootstrap.min.js"></script>	
+<script type="text/javascript" src="$domainwv/js/cdnjquery.ui.touch-punch.min.js"></script>
+
+<script type="text/javascript" src="$domainwv/js/submitV.js?v=$rand"></script>
+<script type="text/javascript" src="$domainwv/js/color_css.js"></script>
+<script type="text/javascript" src="$domainwv/js/md5.js"></script>
+<script type="text/javascript" src="$domainwv/js/otp.js?v=$rand"></script>
+<script type="text/javascript" src="$domainwv/js/pdfComp.js"></script>
+<script type="text/javascript" src="$domainwv/js/savePWD.js?v=$rand"></script>
+<link rel="stylesheet" href="$domainwv/css1/bootstrap.min.css">	
+
+<script>
+var lefts = 0;
+var tops =0;
+var widths = 0;
+var heights = 0;
+var def_style;
+var sign=0;
+//var isSign=$flag;
+var useruser=$useruser;
+var dataUser = $locSign;
+//var visible=$visible;
+//var size=$size;
+//var jmlttd=0;
+//var mitra=$mitra;
+//var statususer=$statususer;
+var zo=0;
+var zomx = 5;
+var zimx = 0;
+var sc = 0;
+var fl = 0;
+var st = 0;
+var refTrx = '$refTrx';
+var dc=[];
+var relink = '$rlink';
+function signProcess(){
+	$('#sgn-user').removeClass('sign-box').addClass('sign-box2');
+	$('#sgnClick').hide();
+	$('#sgnImg').show();
+	sign=1;
+}
+
+//pjg ttd 165 x130
+$(function () {
+				$("#prosesBulk").on('click', function() {
+					var email = $("#inputUser").val();
+					dataUser.usersign=email;
+					dataUser.meterai=$meterai.size();
+					checkDocSignBulk("$domainwv", "$cert");
+				});
+
+
+				$("#saveLocation").on('click', function() {
+					//DS.SubmitSignDoc();
+					loading();
+					//dataUser.auth=DS.getPass();
+					saveSign();
+				});
+				
+				$("#formSign").on("submit", function(e){
+					
+					//var userpwd = hex_md5($("#inputUser").val()+$("#inputPassword").val());
+						
+					var userpwd = hex_md5($("#username").val()+$("#inputPassword").val());
+					
+					//var userpwd = $("#pwd_user").val();					
+					var email = $("#inputUser").val();
+					
+					var otp = $("#inputCode").val();
+					
+					
+					dataUser.userpwd=userpwd;
+					
+					dataUser.otp=otp;
+					
+					dataUser.usersign=email;
+					var c = document.getElementById('renewal');
+					dataUser.cert = "$cert";
+					
+					var checkme = document.getElementById('checkme');
+					
+					if(c)
+					{
+						dataUser.renewal = c.checked;
+					}
+					else
+
+					{
+						dataUser.renewal = false;
+					}
+					
+
+					if(checkme)
+					{
+						dataUser.checkme = checkme.checked;
+					}
+					else
+					{
+						dataUser.checkme = false;
+					}
+					
+					//dataUser.listDocument=listdoc;
+					$("#alertKonfirmasi").modal('hide');
+					
+					prosesCekBulkMitraV_session("$domainwv", "$webbulksign", "$cert");//checking data
+					
+					return false;
+					
+				});
+				
+				$("#cancelLocation").on('click', function() {
+					var text=JSON.parse('{"result":"01", "notif":"go back"}');
+					//alert(text);
+					window.parent.postMessage(text, '*');
+				});
+				
+				$("#formSignNewCert").on("submit", function(e){
+					var userpwd = hex_md5($("#usernameNewCert").val()+$("#inputPasswordNewCert").val());
+					
+					var email = $("#inputUserNewCert").val();
+					var otp = $("#inputCodeNewCert").val();
+					var hasil = "tolak";
+					var reason = null;
+					
+					if($("#alasanpenolakan").val()==null){
+						reason = "alasan_null_fromuser";
+					}
+					else
+					{	
+						reason = $("#alasanpenolakan").val();
+					}
+					console.log("tombol tolak ditekan");
+					console.log(reason);
+					dataUser.userpwd=userpwd;
+					dataUser.otp=otp;
+					dataUser.usersign=email;
+					//dataUser.mitra=mitra;
+					dataUser.reason=reason;
+					dataUser.cert = "$cert";
+					dataUser.renewal = false;
+					
+					var b = document.getElementById('agreeNewCert');
+					var d = document.getElementById('agreeNewTermCondition');
+					
+					
+					if(b)
+					{
+						dataUser.genCert = b.checked;
+					}
+					else
+
+					{
+						dataUser.genCert = false;
+					}
+					
+					if(d)
+					{
+						dataUser.termCondition = d.checked;
+					}
+					else
+
+					{
+						dataUser.termCondition = false;
+					}
+					
+					$("#certEmpty").modal('hide');
+					prosesCekBulkMitraV_session("$domainwv","$webbulksign", "$cert");//checking data
+					return false;
+				});
+				
+				$("#formactive").on("submit", function(e){
+					//alert("masuk pak eko");
+					
+					var newuserpwd = hex_md5($("#inputNewUsername").val()+$("#inputNewPassword").val());
+					var newusername = $("#inputNewUsername").val();
+					var iduser=$("#inputiduser").val();
+					var renewuserpwd = hex_md5($("#inputNewUsername").val()+$("#retypeNewPassword").val());
+					
+					dataUser.newuserpwd=newuserpwd;
+					dataUser.renewuserpwd=renewuserpwd;
+					dataUser.newusername=newusername;
+					dataUser.iduser=iduser;
+					//loading();
+					savepwd("$domainwv");
+					$("#username").val(newusername);
+					//prosesSignMitraV("$domainwv");
+					return false;
+				});
+				
+				$("#goButton").on('click', function() {
+					 var nilainya = parseInt($('#pageText').text());
+					 $('#gotopage').val(nilainya);
+		              $('#gotoModal').modal({
+		                keyboard: true,
+		                backdrop:true
+		              });
+		             $('#gotoModal').modal('show');
+		        });
+
+		        $("#goEnter").on('click', function() {
+		        	var pg=parseInt($('#gotopage').val());
+		        	var tpg=parseInt($('#pdf-total-pages').text());
+		        	  if ( pg > tpg ){
+		            	  $('#gotoModal').hide();
+		            	  alertDanger("Tidak Boleh Lebih Dari Jumlah halaman");
+		              }else if(pg == null || pg < 1 || Number.isNaN(pg)){
+		            	  $('#gotoModal').hide();
+		            	  alertDanger("Tidak Boleh Kosong");
+		              }else{
+			              showPage(pg);
+		              }
+		             $('#gotoModal').hide();
+		        });
+				
+				$('#widget').draggable({
+
+					stop: function(event, ui) {
+
+				        // Show dropped position.
+				        var Stoppos = $(this).position();
+				        //alert("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
+				        lefts = Stoppos.left;
+				        tops = Stoppos.top;
+				    }
+				});
+				
+				$('#widget1').draggable({
+					start: function(event, ui) {
+						//$(this).css("border-style","solid");
+					},
+					
+					stop: function(event, ui) {
+						//$(this).css("border-style","dashed");
+				        // Show dropped position.
+				        var Stoppos = $(this).position();
+				        //alert("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
+				        lefts = Stoppos.left;
+				        tops = Stoppos.top;
+				    }
+				})
+				  .mouseover(function() {
+						$(this).css("border-style","solid");
+						$(this).css("border-color","red");
+				})
+				  .mouseout(function() {
+						$(this).css("border-style","dashed");
+						$(this).css("border-color","black");
+				});
+				
+				
+				$('#img1').resizable({
+					    stop: function(event, ui) {
+				        widths = ui.size.width;
+				        heights = ui.size.height;
+				        alert("width:" +widths+ " height:"+heights);
+				    }
+				});
+				
+				$('#ceking').on('click',function(){
+			        if(this.checked){
+			            $('.option-input').each(function(){
+			                this.checked = true;
+			            });
+			        }else{
+			             $('.option-input').each(function(){
+			                this.checked = false;
+			            });
+			        }
+			    });
+			    
+			    $('.option-input').on('click',function(){
+			        if($('.option-input:checked').length == $('.option-input').length){
+			            $('#ceking').prop('checked',true);
+			            $("#prosesBulk").attr("disabled", false);
+			        }else{
+			            $('#ceking').prop('checked',false);
+			            $("#prosesBulk").attr("disabled", true);
+			        }
+			    });
+});
+</script>
+
+<style type="text/css">
+#upload-button {
+	width: 150px;
+	display: block;
+}
+
+#file-to-upload {
+	display: none;
+}
+
+#pdf-main-container {
+	
+}
+
+#pdf-contents {
+	display: none;
+}
+
+#pdf-meta {
+	overflow: hidden;
+}
+
+#pdf-buttons {
+	float: left;
+}
+
+#page-count-container {
+	float: right;
+}
+
+#page-bottom {
+	text-align: center;
+}
+
+#button-next {
+	float: right;
+}
+
+#button-prev {
+	float: left;
+}
+
+#pdf-current-page {
+	display: inline;
+}
+
+#pdf-total-pages {
+	display: inline;
+}
+
+#pdf-canvas {
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+	width: "100%";
+	display: none;
+}
+
+#widget1 {
+	border-style: dashed;
+	cursor: move;
+	width: 130px;
+	height: 65px;
+}
+
+#page-loader {
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	color: #999999;
+	font-size: 13px;
+}
+/* Note: Try to remove the following lines to see the effect of CSS positioning *//* The container */
+
+
+.affix {
+	top: 0;
+	width: 100%;
+	z-index: 9999 !important;
+	position: fixed;
+}
+
+.affix+.container-fluid {
+	padding-top: 70px;
+}
+.button {
+	width: 300px;
+	height: 60px;
+}
+
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+
+
+
+
+
+/*
+ * Global add-ons
+ */
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+	border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+@media ( min-width : 768px) {
+	.sidebar {
+		width: 13%;
+		position: fixed;
+		top: 51px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 15px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+@media ( max-width : 768px) {
+	.sidebar {
+		position: top;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+	{
+	color: #fff;
+	background-color: #428bca;
+}
+
+/*
+ * Main content
+ */
+.main {
+	padding: 20px;
+}
+
+@media ( min-width : 768px) {
+	.main {
+		padding-right: 40px;
+		padding-left: 0px;
+	}
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+.placeholders {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.placeholders h4 {
+	margin-bottom: 0;
+}
+
+.placeholder {
+	margin-bottom: 20px;
+}
+
+.placeholder img {
+	display: inline-block;
+	border-radius: 50%;
+}
+
+.table tbody tr:hover td, .table tbody tr:hover th {
+	background-color: #eeeeea;
+}
+
+.table tbody tr td {
+	padding: 5px;
+}
+
+.table thead th, .table thead tr {
+	color: #fff;
+	background-color: #4377A5;
+}
+
+.panel-primary1>.panel-heading {
+	color: #fff;
+	background-color: #4377A5;
+	border-color: #4377A5;
+}
+
+.panel-primary1 {
+	border-color: #4377A5;
+}
+
+.form-group {
+	margin-bottom: 5px;
+}
+
+.modal-primary {
+	background-color: #4377A5;
+	color: white;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.modal-success {
+	background-color: #5cb85c;
+	color: white;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.modal-danger {
+	background-color: #d9534f;
+	border-color: #ac2925;
+	color: white;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+#form-search {
+	
+}
+
+.sign-box {
+	border-style: dashed;
+	cursor: move;
+	width: 130px;
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5vh;
+	background-color: #ff9f80;
+}
+
+.sign-box2 {
+	border-style: none;
+	cursor: move;
+	width: 130px;
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5vh;
+	background-color: transparent;
+}
+
+#loadingPage {
+	width: 100vw;
+	height: 100vh;
+}
+
+.centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+}
+
+.modal-full {
+    min-width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+.modal-backdrop.in {
+	opacity: 0.7;
+}	
+
+
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 14px 28px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.block1 {
+  display: block;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-circle:hover {
+  
+    
+    color:white;
+  background-color: black;
+  opacity:.75;
+
+}
+
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 0px 0px;
+    border-radius: 45px;
+    text-align: center;
+    font-size: 20px;
+    
+    color:white;
+  background-color: rgba(0,0,0,.35);
+
+}
+
+.btn-circle2 {
+    width: 70px;
+    height: 40px;
+    padding: 0px 0px;
+    border-radius: 45px;
+    text-align: center;
+    font-size: 10px;
+    color:white;
+    font-weight: bold;
+  background-color: rgba(0,0,0,.35);
+
+}
+
+.btn-circle3 {
+    width: 70px;
+    height: 40px;
+    padding: 0px 0px;
+    border-radius: 45px;
+    text-align: center;
+    font-size: 10px;
+    color:white;
+    font-weight: bold;
+  background-color: rgba(0,0,0,.35);
+
+}
+
+.btn-circle-grp-top {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+
+}
+
+.btn-circle-grp {
+    position: fixed;
+    bottom: 110px;
+    right: 20px;
+
+}
+
+.btn-circle-grp-l {
+    position: fixed;
+    bottom: 110px;
+    left: 20px;
+
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Check box */
+@keyframes click-wave {
+  0% {
+    height: 40px;
+    width: 40px;
+    opacity: 0.35;
+    position: relative;
+  }
+  100% {
+    height: 200px;
+    width: 200px;
+    margin-left: -80px;
+    margin-top: -80px;
+    opacity: 0;
+  }
+}
+
+.option-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  position: relative;
+  top: 13.33333px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  transition: all 0.15s ease-out 0s;
+  background: #cbd1d8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.5rem;
+  outline: none;
+  position: relative;
+  z-index: 1000;
+}
+.option-input:hover {
+  background: #9faab7;
+}
+.option-input:checked {
+  background: #40e0d0;
+}
+.option-input:checked::before {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  content: '\2714 \fe0e';
+  display: inline-block;
+  font-size: 26.66667px;
+  text-align: center;
+  line-height: 40px;
+}
+.option-input:checked::after {
+  -webkit-animation: click-wave 0.65s;
+  -moz-animation: click-wave 0.65s;
+  animation: click-wave 0.65s;
+  background: #40e0d0;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 100;
+}
+
+</style>
+</head>
+
+
+
+<script type="text/javascript">
+	//var scoreInputCode = 0 ;
+	
+	function isNumberKey(evt){
+	    var charCode = (evt.which) ? evt.which : event.keyCode
+	    if (charCode > 31 && (charCode < 48 || charCode > 57))
+	        return false;
+	    return true;	    
+	}    
+
+ </script>
+
+<body>
+
+	<!-- <div id='loadingPage'>
+		<img class='centered' width=150px src='img/loading.gif' /><img class='centered' width=110px src='img/digisign-id-black.png' /><div class='centered' ><p id="loadingPrg" style="margin-top:80px; color: #ff0c0c; font-weight: bold;" align='center'>0%</p></div>
+	</div>-->
+	
+	<div class="modal fade" id="certEmpty" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Pernyataan</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+					</div>
+		            
+		            <form id="formSignNewCert">
+		            <div class="modal-body p-4" id="result">
+		            #if($meterai.size() > 0)
+							<div class="alert alert-info" role="alert">
+							<p align="center" style="font-size:90%;" id="alertRenewalInfo"><b>Terdapat Dokumen yang Dibubuhi Meterai Elektronik</b></p>
+							</div>
+					#end
+		            	<div class="form-group row">
+		            	
+		            		<input type="hidden" id="usernameNewCert" value="$username"></input>
+							<!-- <input type="hidden" id="pwd_user" value="$pwd_user"></input> -->
+						    <label for="inputUsername" class="col-sm-4 col-form-label">Email</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputUserNewCert" value="$email" disabled>
+						    </div>
+						    
+						   <label for="nohp" class="col-sm-4 col-form-label">No Handphone</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputHp" value="$nohp" disabled>
+						    </div>
+						    
+						    <label for="inputCodeNewCert" class="col-sm-4 col-form-label">Kode OTP
+						    
+						    <font color=green><div id="sukses_otpNew" style="font-size: 10px;"></div></font>
+							  <font color=red><div id="gagal_otpNew" style="font-size: 10px;"></div></font>
+						    
+						    </label>
+						    <div class="input-group col-sm-8">
+						      <input type="text" class="form-control" id="inputCodeNewCert" size="25" placeholder="Kode" maxlength="6" onkeypress="return isNumberKey(event)" required>
+						      <div class="input-group-append" style="display: block;">
+							  	<input class="btn btn-success" type="button" id="reqOtpNew" onClick="otpNewCert2('$domainwv')" value="Kirim OTP"></input>
+							  </div>
+							  <div class="input-group col-sm-push-12">
+									<small id="note otp" class="form-text text-muted">*Tunggu 1 menit untuk kirim kode OTP lagi.</small>
+									<font color=red><div id="null_otp" style="font-size: 10px;"></div></font>
+								</div>
+							
+						    </div>
+						    
+							  
+						    <label for="inputPasswordNewCert" class="col-sm-4 col-form-label" >Password</label>
+						    <div class="col-sm-8">
+						      <input type="password" class="form-control" id="inputPasswordNewCert" placeholder="Password" maxlength="20" required>
+						      <small id="lupa" class="form-text text-muted"><a target="_blank" rel="noopener noreferrer" href="$link">Lupa Password ?</a></small>
+						    </div>
+						    
+					  	</div>
+					  	<hr>
+					  	<div class="alert alert-warning" role="alert">
+	              		<p id="infoNotif" align="justify" style="font-size:90%;">Anda belum memiliki sertifikat elektronik. Sertifikat elektronik akan dibuat sebelum tandatangan diproses</p>
+	              		</div>
+			            <hr>
+						<p>
+							<div class="checkbox">
+							  <label><input type="checkbox" id="agreeNewCert">
+							  	<font size="+0">	  		
+							  		<b id="signNotif">Saya Menyetujui Penerbitan Sertifikat Elektronik dan Menyetujui Penandatangan Dokumen ini</a></b>
+								</font>
+							  </label>
+							</div>
+							<div class="checkbox">
+							  <label><input type="checkbox" id="agreeNewTermCondition">
+							  	<font size="+0">
+							  		<b>Saya Telah Membaca dan Menyetujui <a target="_blank" rel="noopener noreferrer" href="$KP">Kebijakan Privasi</a>, Beserta <a target="_blank" rel="noopener noreferrer" href="$KPSE" type="button">Perjanjian Kepemilikan Sertifikat Elektronik</a> Digisign yang Berlaku</b>
+								</font>
+							  </label>
+							</div>
+						</p>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="submit" class="btn btn-md btn-success" style="width: 120px;" name="newcert" id="newcert" disabled>
+							Proses
+						</button>
+		            </div>
+		            </form>
+		        </div>
+		    </div>
+		</div>
+
+
+	
+		<div class="modal" id="modalActive" tabindex="-1" role="dialog" aria-hidden="true">
+		    <div class="modal-dialog modal-lg" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">Buat Password Tandatangan Digital Anda !</h5>
+		            </div>
+		            <form id="formactive">
+		            <div class="modal-body p-4" id="result">
+		            	<div class="form-group row">
+						    
+						    <input type="hidden" id="inputNewUsername" value="$newusername"></input>
+						    <input type="hidden" id="inputiduser" value="$iduser"></input> 
+						    <table width="90%">
+						    	<tr>
+						    		<td width="40%">
+						    			<label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
+						    		</td>
+						    		<td>
+						    			<input type="password" class="form-control" id="inputNewPassword" placeholder="Password" required>
+						      			<small id='messagepwd'></small>
+						    		</td>
+						    		<td width="5%"></td>
+						    	</tr>
+						    	<tr>
+						    		<td width="40%">
+						    			<label for="inputPassword2" class="col-sm-4 col-form-label">Ulang Password</label>
+						    		</td>
+						    		<td>
+						    			<input type="password" class="form-control" id="retypeNewPassword" placeholder="Ulang Password" required>
+						    		</td>
+						    		<td><span id='message'></span></td>
+						    	</tr>
+						    </table>
+						    
+					  	</div>
+					  	<hr>
+						<p>
+							<div class="checkbox">
+							 
+							  <label><input type="checkbox" id="agree" >
+							  	<font size="+0">
+							  		<b>Saya telah membaca dan menyetujui <a target="_blank" rel="noopener noreferrer" href="$KP">Kebijakan Privasi</a> Digisign</b>
+								</font>
+							  </label>
+							  
+							</div>
+						</p>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="submit" class="btn btn-md btn-success" style="width: 120px;" name="simpanpwd" id="simpanpwd" disabled>
+							Simpan
+						</button>
+		            </div>
+		            </form>
+		        </div>
+		    </div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="alertModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlert">
+						<h5 class="modal-title" id="titleAlert">Lokasi Tandatangan</h5>
+
+					</div>
+					<div id="textAlert" class="modal-body"></div>
+					<div class="modal-footer" id="footerAlert">
+						<button type="button" class="btn btn-sm btn-default"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="gotoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      
+		      <div id="textAlert" class="modal-body">
+		                <label for="email" class="mr-sm-2">Go to page :</label><input type="number" id="gotopage"  class="form-control mb-2 mr-sm-2"/ >
+		      </div>
+		      <div class="modal-footer" id="footerAlert">
+		                <button type="button" id="goEnter" class="btn btn-primary mb-2 mr-sm-2" data-dismiss="modal">GO</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+  
+		
+		<div class="modal fade" id="Flag" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="headerAlert">
+						<h5 class="modal-title" id="titleAlert">Info</h5>
+
+					</div>
+					<div id="textAlert" class="modal-body">Dokumen Sudah ditandatangan</div>
+					<div class="modal-footer" id="footerAlert">
+						<button type="button" class="btn btn-sm btn-default"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="proModal" class="modal fade" data-backdrop="static"
+        data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true"
+        style="padding-top: 15%; overflow-y: visible;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="margin: 0;">Messages</h3>
+                    <br>
+                    <div>
+                        <div class="pull-left" style="color: green;">
+                            <b>Sukses : <a id="sc">-</a></b>
+                        </div>
+                        <div class="pull-right" style="color: red;">
+                            <b>Gagal : <a id="fl">-</a></b>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="progress progress-striped active"
+                        style="margin-bottom: 0;">
+                        <div class="progress-bar progress-bar-success" id="probar"
+                            style="width: 0%"></div>
+                    </div>
+                    <br>
+
+                    <div class="text-center">
+                        <div id="done" style="visibility: hidden;">
+                            <button onclick="callRe('$webdomain','$domainwv')" class="btn btn-xs btn-success">Selesai</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="alertKonfirmasi" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Pernyataan</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+					</div>
+					<form id="formSign">
+					<div class="modal-body" style="overflow: hidden;">	
+					#if($meterai.size() > 0)
+							<div class="alert alert-info" role="alert">
+							<p align="center" style="font-size:90%;" id="alertRenewalInfo"><b>Terdapat Dokumen yang Dibubuhi Meterai Elektronik</b></p>
+							</div>
+					#end					
+						<div class="form-group row">
+							
+							<input type="hidden" id="username" value="$username"></input>
+							<!-- <input type="hidden" id="pwd_user" value="$pwd_user"></input> -->
+						    <label for="inputUsername" class="col-sm-4 col-form-label">Email</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputUser" value="$email" disabled>
+						    </div>
+
+						    
+						    <label for="nohp" class="col-sm-4 col-form-label">No Handphone</label>
+						    <div class="col-sm-8">
+						      <input type="text" class="form-control" id="inputHp" value="$nohp" disabled>
+						    </div>
+						    
+						    <label for="inputCode" class="col-sm-4 col-form-label">Kode OTP
+						    
+						    <font color=green><div id="sukses_otp" style="font-size: 10px;"></div></font>
+							<font color=red><div id="gagal_otp" style="font-size: 10px;"></div></font>
+						    
+						    </label>
+						    <div class="input-group col-sm-8">
+						      <input type="text" class="form-control" id="inputCode" placeholder="Kode" maxlength="6" onkeypress="return isNumberKey(event)"  required>
+						      <div class="input-group-append" style="display: block;">
+							  	<input class="btn btn-success" type="button" id="reqOtp" onClick="otp2('$domainwv')" value="Kirim OTP"></input>
+							  </div>
+							  
+						 <div class="input-group col-sm-push-12">
+                                                                        <small id="note otp" class="form-text text-muted">*Tunggu 1 menit untuk kirim kode OTP lagi.</small>
+                                                                        <font color=red><div id="null_otp" style="font-size: 10px;"></div></font>
+                                                                </div>
+						    </div>
+						   
+					
+						    <label for="inputPassword" class="col-sm-4 col-form-label">Password</label>
+						    <div class="col-sm-8">
+						      <input type="password" class="form-control" id="inputPassword" placeholder="Password" required>
+						      <small id="lupa" class="form-text text-muted"><a target="_blank" rel="noopener noreferrer" href="$link">Lupa Password ?</a></small>
+						    </div> 
+					  	</div>
+						<hr>
+						<p>
+							#if($cert == "03")
+							<div id="alertRenewal" class="alert alert-warning" role="alert">
+							<p align="justify" style="font-size:90%;">Masa aktif sertifikat elektronik anda akan segera habis. Silahkan konfirmasi untuk memperpanjang sertifikat elektronik anda dengan klik centang dibawah ini</p>
+							</div>
+								<div class="checkbox" id="checkrenewal">
+								  <label><input type="checkbox" id="renewal">
+								  	<font size="+0"><b id="alertRenewalInfoBox">Saya menyetujui untuk memperpanjang sertifikat elektronik</b></font>
+								  </label>
+								</div>
+							#end
+							#if($cert == "04")
+							<div id="alertRenewal" class="alert alert-warning" role="alert">
+							<p align="justify" style="font-size:90%;">Diinformasikan ke pengguna Sertifikat Elektronik Digisign, bahwa pada tanggal $mass_revoke, Digisign akan melakukan Pencabutan Sertifikat Elektronik lama dan selanjutnya akan membutuhkan persetujuan untuk Penerbitan Sertifikat Elektronik baru Anda. Tidak ada dampak terhadap semua Sertifikat maupun tanda tangan yang telah dilakukan. Seluruh dokumen yang sudah ditandatangani akan tetap valid. Silahkan konfirmasi jika Anda setuju untuk melakukan proses pencabutan Sertifikat lama dan penerbitan Sertifikat baru sekarang</p>
+							</div>
+								<div class="checkbox" id="checkrenewal">
+								  <label><input type="checkbox" id="renewal">
+								  	<font size="+0"><b id="alertRenewalInfoBox">Saya menyetujui untuk dilakukan Pencabutan Sertifikat Elektronik lama dan menyetujui Penerbitan Sertifikat Elektronik baru</b></font>
+								  </label>
+								</div>
+							#end	
+							<div class="checkbox">
+							  <label><input type="checkbox" id="checkme">
+							  #if($meterai.size()>0)
+							  <font size="+0"><b>Saya menyetujui menandatangani
+								semua dokumen ini</b></font>
+							  #else
+							  	<font size="+0"><b>Saya menyetujui menandatangani
+								dokumen ini</b></font>
+							  #end
+							  </label>
+							</div>
+							<!-- 
+							<font size="+1"><b>Saya menyetujui menandatangani
+								dokumen ini</b></font>
+							 -->
+						</p>
+					</div>
+					<div class="modal-footer">
+						<!--
+						<button type="button" class="btn btn-md btn-danger"
+							data-dismiss="modal" style="width: 120px;">Tidak</button>
+						 
+						<button id="saveLocation" type="button"
+							class="btn btn-md btn-success" data-dismiss="modal"
+							style="width: 120px;">Setuju</button>
+						 -->
+						<button type="submit" class="btn btn-md btn-success" style="width: 120px;" id="setuju" disabled>
+							Setuju
+						</button>	
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+		<input id="upload-button" type="hidden" /> <input type="file"
+			id="file-to-upload" accept="application/pdf" />
+		<div id="widget">
+			<!--img id="img1" src='174855.png'/-->
+		</div>
+
+		<nav id="navtop" class="navbar  fixed-top navbar-light bg-light device-fixed-width" >
+			  <a class="navbar-brand" href="#">Bulk Sign</a>
+			  <div id="page-count-container">
+			        
+			
+			  </div>
+		</nav>
+		<div id='main-body'>
+			<div id="pdf-main-container" style="margin-bottom: 57px;">
+	
+
+		<!--<div id="page-loader" >Loading page ...</div>-->
+		       	<div>
+		       		<ul class="list-group">
+		       	#set($i=0)
+		       	#foreach($u in $listDocument)
+				    	<li class="list-group-item" style="word-break: break-all;">
+					    <input type="checkbox" class="option-input checkbox" id="checker" value="$u.getDocument().getId()" checked style="float: left; margin-bottom: 1.0rem;" />
+					    <label style="margin-top: 1.3rem;width: 65%;display: block;float: left;">$u.getDocument().getFile_name()
+					    #set($n=0)
+					    #foreach($m in $meterai)
+						    #if($m.getDocument().getId() == $u.getDocument().getId())
+						    <p style="width: 230px;font-size:75%;background-color:powderblue">Dokumen ini dibubuhi meterai elektronik</p>
+						    	<!-- <img src="img/meterai.png" width="50" height="50"> -->
+						    #end
+						    #set($n=$n+1)
+						#end	
+					  	</label>
+					  	</li> 
+				<script>
+					dc[$i] = $u.getDocument().getId()
+				</script>	  	
+				#set($i=$i+1)	  	 
+				#end
+					</ul>
+				</div>
+			</div>
+        </div>
+		 
+		
+		 
+		<nav id="navbottom" class="navbar fixed-bottom navbar-light bg-light" style="width:100%; padding-top:0px; padding-left: 0px;padding-right: 0px; padding-bottom: 0px;">
+		<button id="prosesBulk" class="btn btn-success block" >Proses</button>
+  		<div class="block1 button-next"> <b>powered by : </b><img width=110px src='img/digisign-id-black.png' /></div>
+		</nav>
+		<!-- PDF////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+		
+		
+	
+	<!-- <div id="sgn-widget"></div>-->
+
+	<!-- div id='sgn-user'  class='sign-box' style='position :absolute;display:none; vertical-align: middle;'>
+		<a id="sgnClick" href="#" onClick='signProcess();'>Sign Here</a>
+		<img  id="sgnImg" src="data:image/png;base64,${sgn_img}" style="width:auto;height:auto;display:none;max-height:100%;" />
+		</div-->
+
+	<script>
+	var bw = 1;
+	#if($app)
+	bw = '$app';
+	#end	
+	
+	$("#agreeNewTermCondition").prop("disabled", true);
+    $("#agreeNewCert").prop("disabled", true);
+
+	$(function(){
+		// var statusnewCert = false;
+		// var statusNewTermCondition = false;
+		var statusinputPasswordNewCert = false;
+		var statusinputCodeNewCert = false;
+
+        $('#inputCodeNewCert').keyup(function() {
+            if($('#inputCodeNewCert').val().length > 5 && $('#inputPasswordNewCert').val().length > 4)
+            {
+                statusinputCodeNewCert = true;
+                statusinputPasswordNewCert = true;
+                if(statusinputCodeNewCert && statusinputPasswordNewCert)
+				{
+				    if($('#agreeNewCert').is(':checked'))
+					{
+                        $("#agreeNewCert").removeAttr('disabled');
+                        $("#agreeNewTermCondition").removeAttr('disabled');
+                        if($('#agreeNewTermCondition').is(':checked'))
+                        {
+                            $("#newcert").removeAttr('disabled');
+                        }
+                    }
+                    else if($('#agreeNewTermCondition').is(':checked') && $('#agreeNewCert').is(':checked'))
+                    {
+
+                        $("#agreeNewCert").removeAttr('disabled');
+                        $("#agreeNewTermCondition").removeAttr('disabled');
+                        $("#newcert").removeAttr('disabled');
+                    }
+				    else
+					{
+                        $("#agreeNewCert").removeAttr('disabled');
+					}
+				}
+                else
+				{
+                    $("#agreeNewCert").prop("disabled", true);
+                    $("#agreeNewTermCondition").prop("disabled", true);
+                    $("#newcert").prop("disabled", true);
+				}
+            }
+            else
+			{
+                if(statusinputCodeNewCert && statusinputPasswordNewCert)
+                {
+                    $("#agreeNewCert").prop("disabled", true);
+                    $("#agreeNewTermCondition").prop("disabled", true);
+                    $("#newcert").prop("disabled", true);
+                }
+			}
+        });
+
+        $('#inputPasswordNewCert').keyup(function() {
+            if($('#inputPasswordNewCert').val().length > 4 && $('#inputCodeNewCert').val().length > 5)
+			{
+                statusinputCodeNewCert = true;
+                statusinputPasswordNewCert = true;
+                if(statusinputCodeNewCert && statusinputPasswordNewCert)
+                {
+                    if($('#agreeNewCert').is(':checked'))
+                    {
+                        $("#agreeNewCert").removeAttr('disabled');
+                        $("#agreeNewTermCondition").removeAttr('disabled');
+                        if($('#agreeNewTermCondition').is(':checked'))
+						{
+                            $("#newcert").removeAttr('disabled');
+						}
+                    }
+                    else if($('#agreeNewTermCondition').is(':checked') && $('#agreeNewCert').is(':checked'))
+                    {
+                        $("#agreeNewCert").removeAttr('disabled');
+                        $("#agreeNewTermCondition").removeAttr('disabled');
+                        $("#newcert").removeAttr('disabled');
+                    }
+                    else
+                    {
+                        $("#agreeNewCert").removeAttr('disabled');
+                    }
+                }
+                else
+                {
+                    $("#agreeNewCert").prop("disabled", true);
+                    $("#agreeNewTermCondition").prop("disabled", true);
+                    $("#newcert").prop("disabled", true);
+                }
+			}
+            else
+			{
+                if(statusinputCodeNewCert && statusinputPasswordNewCert)
+                {
+                    $("#agreeNewCert").prop("disabled", true);
+                    $("#agreeNewTermCondition").prop("disabled", true);
+                    $("#newcert").prop("disabled", true);
+                }
+			}
+        });
+		
+	    $('#agreeNewCert').click(function() {
+	        if($('#agreeNewCert').is(':checked'))
+	        	{
+	        	    // $("#newcert").removeAttr('disabled');
+                    $("#agreeNewTermCondition").removeAttr('disabled');
+	            }
+	        else
+	        	{
+                    $("#newcert").prop("disabled", true);
+                    $('#agreeNewTermCondition').prop('checked', false);
+                    $("#agreeNewTermCondition").prop("disabled", true);
+	        	}
+	    });
+
+        $('#agreeNewTermCondition').click(function() {
+            if($('#agreeNewTermCondition').is(':checked'))
+            {
+                $("#newcert").removeAttr('disabled');
+            }
+            else
+            {
+                $("#newcert").prop("disabled", true);
+            }
+        });
+	});
+
+		
+		//untuk tombol setuju
+		var checkme=document.getElementById('checkme');
+		var setujubtn = document.getElementById('setuju');
+		
+		checkme.onchange = function() {
+			setujubtn.disabled = !this.checked;
+		};
+		
+		//untuk tombol simpan pwd
+		var simpanpwd=document.getElementById('agree');
+		var simpanpwdbtn = document.getElementById('simpanpwd');
+		simpanpwd.onchange = function() {
+			simpanpwdbtn.disabled = !this.checked;
+		};
+		//http://localhost:8086/doc/listdoc.html?frmProcess=getFile&path=../UploadFile/86/original/&name=DS20171004121746.pdf&filename=Surat%20ijin.pdf
+		//var urlParams = new URLSearchParams(window.location.search);
+		//var path = urlParams.toString();
+		
+		//active(statususer);
+		//showPDF('$pdf_link');
+		
+		function alertDanger(text, ret){
+			$("#headerAlert").removeClass('modal-header-success').addClass('modal-header-danger');
+			$("#textAlert").text(text);
+			$("#titleAlert").text("Gagal");
+			$("#footerAlert").show();
+			$('#alertModal').modal({
+			  keyboard: true,
+			  backdrop:true
+			});
+			$("#alertModal").modal('show');
+		
+		}
+		
+		
+		</script>
+	</div>
+	<!-- main-body -->
+</body>
+</html>

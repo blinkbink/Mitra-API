@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.jpos.ee.status.StatusTag" table="status_tag">
+		<id name="id" column="id" type="long">
+			<generator class="native" />
+		</id>
+		<property name="tag" type="string" length="32"
+			index="status_tag" />
+		<many-to-one name="status"
+			class="org.jpos.ee.status.Status" column="status" />
+	</class>
+</hibernate-mapping>
+

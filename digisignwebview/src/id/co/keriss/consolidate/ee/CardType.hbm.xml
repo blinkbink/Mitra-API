@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping 
+  SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="id.co.keriss.consolidate.ee.CardType"
+		table="CardType">
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="sequence">
+				<param name="sequence">cardtype_sequence</param>
+			</generator>
+		</id>
+		<property name="name" type="string" />
+		<property name="digitid" type="integer" />
+		<set name="product" inverse="true">
+			<key column="cardtype"></key>
+			<one-to-many class="id.co.keriss.consolidate.ee.Product" />
+		</set>
+	</class>
+</hibernate-mapping>

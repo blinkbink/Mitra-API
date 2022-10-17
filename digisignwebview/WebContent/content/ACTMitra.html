@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<link rel="icon" href="$domain/favicon.ico">
+
+<title>Aktivasi User Mitra</title>
+<script src="$domain/js/jquery.js"
+	type="text/javascript"></script>
+<link href="$domain/css/bootstrap.min.css" rel="stylesheet">
+<script src="$domain/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="$domain/css/passwordscheck.css" />
+<!-- Include Your CSS file here-->
+<script src="$domain/js/passwordscheck.js"></script>
+<link href="$domain/css/signature-pad.css" rel="stylesheet">
+	
+<link href="$domain/css/jasny-bootstrap.css"
+	rel="stylesheet">	
+<script src="$domain/js/jasny-bootstrap.js"></script>
+<script src="$domain/js/sweetalert.min.js"></script>
+
+
+<style type="text/css">
+
+
+
+	.checkbox.checbox-switch {
+	    padding-left: 0;
+	}
+	
+	.checkbox.checbox-switch label,
+	.checkbox-inline.checbox-switch {
+	    display: inline-block;
+	    position: relative;
+	    padding-left: 0;
+	}
+	.checkbox.checbox-switch label input,
+	.checkbox-inline.checbox-switch input {
+	    display: none;
+	}
+	.checkbox.checbox-switch label span,
+	.checkbox-inline.checbox-switch span {
+	    width: 35px;
+	    border-radius: 20px;
+	    height: 18px;
+	    border: 1px solid #dbdbdb;
+	    background-color: rgb(255, 255, 255);
+	    border-color: rgb(223, 223, 223);
+	    box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset;
+	    transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s;
+	    display: inline-block;
+	    vertical-align: middle;
+	    margin-right: 5px;
+	}
+	.checkbox.checbox-switch label span:before,
+	.checkbox-inline.checbox-switch span:before {
+	    display: inline-block;
+	    width: 16px;
+	    height: 16px;
+	    border-radius: 50%;
+	    background: rgb(255,255,255);
+	    content: " ";
+	    top: 0;
+	    position: relative;
+	    left: 0;
+	    transition: all 0.3s ease;
+	    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+	}
+	.checkbox.checbox-switch label > input:checked + span:before,
+	.checkbox-inline.checbox-switch > input:checked + span:before {
+	    left: 17px;
+	}
+	
+	
+	/* Switch Success */
+	.checkbox.checbox-switch.switch-success label > input:checked + span,
+	.checkbox-inline.checbox-switch.switch-success > input:checked + span {
+	    background-color: rgb(40, 167, 69);
+	    border-color: rgb(40, 167, 69);
+	    box-shadow: rgb(40, 167, 69) 0px 0px 0px 8px inset;
+	    transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;
+	}
+	.checkbox.checbox-switch.switch-success label > input:checked:disabled + span,
+	.checkbox-inline.checbox-switch.switch-success > input:checked:disabled + span {
+	    background-color: rgb(153, 217, 168);
+	    border-color: rgb(153, 217, 168);
+	    box-shadow: rgb(153, 217, 168) 0px 0px 0px 8px inset;
+	}
+
+
+@media ( min-width : 600px) {
+	#main {
+		width: 60%;
+	}
+}
+
+.emojione {
+	width: 20px;
+	height: 20px;
+}
+
+/* better progress bar styles for the bootstrap demo */
+.pass-strength-visible input.form-control, input.form-control:focus {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.pass-strength-visible .pass-graybar, .pass-strength-visible .pass-colorbar,
+	.form-control:focus+.pass-wrapper .pass-graybar, .form-control:focus+.pass-wrapper .pass-colorbar
+	{
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+</style>
+
+
+</head>
+
+<script type="text/javascript">
+
+var tipe = $trans.type;
+</script>
+
+<body style="background: url($request.contextPath/images/home-image-blur.jpg) no-repeat center center fixed; -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+
+
+	##parse("repository:fs_repository://inc/info.html")
+	##parse("repository:fs_repository://inc/header.html")
+		
+	
+
+		<div class="col-md-6 con" >
+			#if($trans == "Sudah Terdaftar Silahkan Login")
+			<div class="page-header">
+			<h3 style="color: white">$trans</h3> 
+			</div>
+			#elseif ($trans=="Error 404")
+			<div class="page-header">
+			<h3 style="color: white">$trans</h3> 
+			</div>
+			#else
+			<div class="page-header">		
+			<h3 style="color: white">Aktivasi</h3>
+			</div>
+	<div class="form-horizontal" >
+		<div class="panel panel-default" >
+			<div class="panel-heading clearfix">
+				<b>Form Data Personal</b>
+			</div>
+			<div class="panel-body">
+			<input type="hidden" id="preid" maxlength="16" value="$trans.id" name="preid">
+			<input type="hidden" id="mitraid" maxlength="16" value="$trans.mitra.id" name="mitraid"> 
+	
+  				<div class="form-group" style="display: none;">
+					<label class="control-label col-sm-3 input-md" for="idcard">No KTP:</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control input-md" id="idcard" maxlength="16"
+							onkeypress="return isNumberKey(event)"
+							#if ($trans.no_identitas != "") 
+							value="$trans.no_identitas"
+							readonly="true" 
+							#end
+							name="idcard"> <font
+							color=red><div id="e_idcard"></div></font>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-3 input-md" for="Name">Nama:</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control input-md" id="name"
+							maxlength="30" onchange="validateName('e_name',this)"
+							#if ($trans.nama != "") 
+							value="$trans.nama"
+							readonly="true" 
+							#end
+							name="name"> 
+							<font color=red><div id="e_name"></div></font>
+					</div>
+				</div>
+				
+				<div class="form-group" >
+					<label class="control-label col-sm-3 input-md" for="Merchant Name">Email Pribadi:</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control input-md" value="$trans.email" readonly="true"  id='email'>
+					</div>
+				</div>
+
+					
+				
+				#if($trans.data_exists==false)
+				
+						#if($trans.type=='2')
+						<div class="form-group" >
+						<label class="control-label col-sm-3 input-md" for="Merchant Name">Email Perusahaan :</label>
+						<div class="col-sm-5">
+						<input type="text" class="form-control input-md" value="$trans.email_perusahaan" readonly="true"  id='email_perusahaan'>
+						</div>
+						</div>
+						
+						<input type="hidden" id="i_wajah"  value="" name="i_wajah">
+						
+						<img id="loadektp" style="max-width: 480px; max-height: 360px; width: auto; height: auto;display: none;" class="img1" 
+							src='$request.contextPath/sourcepoto.html?frmProcess=getFile&potopre=$trans.id&tipe=ktp'/>
+						
+						<script type="text/javascript" src="$domain/js/km/webcam.min.js"></script>
+						<img id="loadselfie" style="max-width: 320px; max-height: 240px; width: auto; height: auto; display: none;" >
+						<div class="form-group">
+							<label class="control-label col-sm-3 input-md" for="i_wajah">Foto Wajah</label>
+							<div class="col-sm-5" id='a_cam' name="a_cam" >
+								<input type="input" class="form-control input-md" id='cam' name="cam" disabled>
+								<font color=red><div id="e_cam"></div></font>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="control-label col-sm-3 input-md"></label>
+								<div class="col-sm-5">
+								<div id="wbf" style="display: none;" class="fileinput fileinput-new" data-provides="fileinput">
+									<span class="btn btn-info btn-file">
+									<span>Camera</span>
+									<input type="file" id="imgselfie" accept="image/*" capture="camera"/></span> 
+									<span class="fileinput-filename"></span>
+									<span class="fileinput-new">Tidak ada foto</span>
+								</div>
+								<button type="button" style="display: none;" class="btn btn-info" id="wb" onClick="on_camera()">Web Cam</button>
+								<input type="hidden" id="i_wajah" name="i_wajah">
+								</div>
+						</div>
+						#end
+		
+						#if ($trans.i_ttd != "") 
+						<input type="hidden" id="i_ttd"  value="$trans.i_ttd" name="i_ttd">
+						#else 
+						<input type="hidden" id="i_ttd"  value="" name="i_ttd">
+						<div class="form-group">
+							<label class="control-label col-sm-3 input-md" for="Merchant Name">Draw Signature</label>
+							<div class="col-sm-5">
+								<input type="input" class="form-control input-md" id='sgn' name="sgn" disabled>
+								<font color=red><div id="e_sgn"></div></font>
+							</div>
+						</div>
+						
+						<div class="form-group">
+						<label class="control-label col-sm-3 input-md"></label>
+							<div class="col-sm-5">
+							<button class="btn btn-info" type="button" data-toggle="modal" data-target="#signModal">Sign</button>
+							</div>
+						</div>
+						#end
+						
+						<div class="form-group">
+		            		<label class="control-label col-sm-3 input-md" for="name">Username:</label>
+		            		<div class="col-sm-5">
+		              			<input type="text" class="form-control input-md" id="username" maxlength="15" onchange="validateUserName('e_username')" name="username" required="">
+		              			<font color="red">
+		                		<div id="e_username"></div>
+		              			</font>
+		            		</div>
+		          		</div>
+		
+						<div class="form-group">
+							<label class="control-label col-sm-3 input-md" for="password">Password:</label>
+							<div class="col-sm-5">
+								<input type="password" class="form-control input-md"
+									onkeyup="validatePwd()" id='password' name="password"> <font
+									color=red><div id="e_password"></div></font>
+		
+							</div>
+						</div>
+		
+						<div class="form-group">
+							<label class="control-label col-sm-3 input-md" for="Confirm Password">Confirm Password:</label>
+							<div class="col-sm-5">
+								<input type="password" class="form-control input-md"
+									onkeyup="validatePwd()" id='password2' name="password2">
+								<font color=red><div id="e_password2"></div></font>
+							</div>
+						</div>
+				
+											
+				#elseif ($trans.data_exists==true)
+						<br>
+						<div class="form-group">
+		            		<label class="control-label col-sm-3 input-md" for="name"></label>
+		            		<div class="col-sm-6">
+		            		<b>Masukkan Username dan Password yang telah terdaftar</b>
+		            		</div>
+		            	</div>
+				
+						<div class="form-group">
+		            		<label class="control-label col-sm-3 input-md" for="name">Username:</label>
+		            		<div class="col-sm-5">
+		              			<input type="text" class="form-control input-md" id="uname" maxlength="15"  name="uname" >
+		              			<font color="red">
+		                		<div id="e_username"></div>
+		              			</font>
+		            		</div>
+		          		</div>
+		
+						<div class="form-group">
+							<label class="control-label col-sm-3 input-md" for="Merchant Name">Password:</label>
+							<div class="col-sm-5">
+								<input type="password" class="form-control input-md"
+									onkeyup="cekPwd()" id='pwd' name="pwd"> <font
+									color=red><div id="e_password"></div></font>
+							</div>
+						</div>
+				
+				
+				#end	
+				<div class="form-group">
+            		<label class="control-label col-sm-3 input-md" for="sk"> </label>
+            		<div class="col-sm-5">
+              		<div class="checkbox checbox-switch switch-success">
+	                	<label>
+	                  		<input type="checkbox" name="sk" id="sk" onclick="cekSk()">
+	                  		<span></span>
+	                  		<a href="#" type="button" data-toggle="modal" data-target="#termModal">Saya telah membaca dan menyetujui syarat dan ketentuan yang berlaku</a>
+	                	</label>
+              		</div>
+            		</div>
+          		</div>		
+				<div class="panel-footer">
+				
+				<div class="pull-right">				
+					<button type="reset" class="btn btn-primary">Reset</button>
+					&nbsp;&nbsp;
+					<button class="btn btn-info" id="nextotp" type="button" onClick="proOtp()" disabled="disabled">Proses</button>
+				</div>
+				<div class="clearfix"></div>
+				</div>
+
+			</div>
+		</div>
+		
+		</div>
+		</div>
+		
+		<div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="signModalLabel">
+  			<div class="modal-dialog modal-lg" role="document">
+    			<div class="modal-content">
+	      			<div class="modal-header">
+	      	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          			<h4 class="modal-title">Silahkan Tandatangan Di bawah ini:</h4>
+					</div>
+	      			<div class="modal-body">
+						<div class="wrapper">
+							<canvas id="signature-pad" class="signature-pad"  style="touch-action: none;"></canvas>
+							<font color="red"><div id="e_tandatangan"></div></font>
+						</div>
+		       		</div>
+		       		<div class="modal-footer">
+			     		<div class="pull-left">
+							<button id="clear"  type="button" class="btn btn-danger" data-action="clear">Hapus</button>
+		       			</div>
+		       			<div class="pull-right">
+							<button id="clear"  type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+		       			</div>
+					</div>
+       			</div>
+     		</div>
+      	</div>
+      	
+      	<div class="modal fade" id="termModal" tabindex="-1" role="dialog" aria-labelledby="termLabel">
+	    <div class="modal-dialog modal-lg" role="document">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">x</button>
+	          <h4 class="modal-title">Terms and Condition</h4>
+	        </div>
+	        <div class="modal-body">
+	          <div class="wrapper" style="width: 100% !important; height: 100% !important; padding: 15px 15px 15px 15px; background-color: white"> ##parse("repository:fs_repository://terms.html") </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  
+      	
+    	<div class="modal fade" id="otpModal" tabindex="-1" role="dialog" aria-labelledby="otpModalLabel">
+  			<div class="modal-dialog modal-lg" role="document">
+    			<div class="modal-content">
+	      			<div class="modal-header">
+	      	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	          			<h4 class="modal-title">Request OTP</h4>
+					</div>
+	      			<div class="modal-body">
+					<div class="col-md-6">
+					<div class="form-horizontal" >
+					<div class="form-group">
+						<label class="control-label col-sm-3 input-md" for="Merchant Name">No HP.</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control input-md"
+
+								#if ($trans.no_handphone != "") 
+								value="$trans.no_handphone"
+								#end
+								readonly="true" 
+								 
+								id='handphone'
+								name="handphone"> <font color=red><div
+									id="e_handphone"></div></font>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-3 input-md">Input OTP</label>
+						<div class="col-sm-6">
+							<input type="input" maxlength="6" onkeypress="return isNumberKey(event)" class="form-control input-md" id='otp' name="otp">
+							<font color=red><div id="e_otp"></div></font>
+						</div>
+					</div>
+						
+		       		<div class="form-group">
+						<label class="control-label col-sm-3 input-md"></label>
+						<div class="col-sm-6">
+							<input class="btn btn-info" type="button" id="btnotp"  value="Request OTP" onclick="otp()" />
+						</div>
+					</div>	
+		       		</div>
+		       		</div>
+		       		</div>
+		       		<div class="modal-footer">
+					<div class="pull-right">
+							<button id="proses" type="button" onclick="proActive()" class="btn btn-success">Proses</button>
+					</div>
+					<div class="clearfix"></div>
+
+					</div>
+       			</div>
+     		</div>
+      	</div>
+
+
+</body>
+</html>
+
+	#if($trans.data_exists==false)
+		<script src="$domain/js/signature_pad.js"></script>
+		<script src="$domain/js/ttd.js"></script>	
+		<script src="$domain/js/activation.js"></script>
+	#end
+
+#end
